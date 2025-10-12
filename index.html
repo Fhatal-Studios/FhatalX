@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FhatalX – Snapshot • Trends • News • Suggestions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root { --ring: rgba(109,94,247,.35); }
+    .card { @apply bg-slate-900/70 border border-slate-700 rounded-2xl shadow-xl; }
+    .glass { @apply bg-slate-800/50 backdrop-blur; }
+    .skeleton{background:linear-gradient(90deg,#1e293b 25%,#334155 37%,#1e293b 63%);background-size:400% 100%;animation:sk 1.4s ease infinite}
+    @keyframes sk{0%{background-position:100% 50%}100%{background-position:0 50%}}
+
+    /* Loading overlay styles */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, #312e81 0%, #0f172a 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1.2s;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #loadingOverlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .pulse-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 1.5rem;
+      background: linear-gradient(120deg, #6366f1 60%, #a5b4fc 100%);
+      display: grid;
+      place-items: center;
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: #fff;
+      box-shadow: 0 0 40px 10px #6366f1a0;
+      animation: pulse 1.2s infinite alternate;
+      position: relative;
+    }
+    .pulse-logo::after {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border-radius: 2rem;
+      background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+      opacity: 0.4;
+      z-index: -1;
+      animation: glow 1.2s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 40px 10px #6366f1a0; }
+      100% { transform: scale(1.12); box-shadow: 0 0 60px 20px #6366f1c0; }
+    }
+    @keyframes glow {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.7; }
+    }
+    .loading-text {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #c7d2fe;
+      letter-spacing: 0.05em;
+      text-align: center;
+      animation: fadein 2s infinite alternate;
+    }
+    @keyframes fadein {
+      0% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    /* Progress bar animation */
+    .loading-bar {
+      width: 120px;
+      height: 8px;
+      border-radius: 8px;
+      background: #1e293b;
+      margin: 2rem auto 0 auto;
+      overflow: hidden;
+      box-shadow: 0 0 12px #6366f1a0;
+      position: relative;
+    }
+    .loading-bar-inner {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #6366f1 0%, #a5b4fc 100%);
+      border-radius: 8px;
+      animation: barmove 1.6s linear forwards;
+    }
+    @keyframes barmove {
+      0% { width: 0; }
+      80% { width: 100%; }
+      100% { width: 100%; }
+    }
+    /* Floating crypto icons */
+    .floating-icons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .floating-icon {
+      position: absolute;
+      font-size: 2.2rem;
+      opacity: 0.18;
+      animation: floaticon 6s linear infinite;
+      filter: blur(0.5px);
+      user-select: none;
+    }
+    .floating-icon:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .floating-icon:nth-child(2) { left: 70%; top: 10%; animation-delay: 1.2s; font-size:2.7rem; }
+    .floating-icon:nth-child(3) { left: 30%; top: 70%; animation-delay: 2.1s; font-size:2.5rem; }
+    .floating-icon:nth-child(4) { left: 80%; top: 60%; animation-delay: 3.3s; font-size:2.1rem; }
+    .floating-icon:nth-child(5) { left: 50%; top: 40%; animation-delay: 4.5s; font-size:2.9rem; }
+    @keyframes floaticon {
+      0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.18;}
+      50% { transform: translateY(-30px) scale(1.12) rotate(10deg); opacity: 0.28;}
+      100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.18;}
+    }
+
+    @media (max-width: 640px) {
+      .pulse-logo {
+        width: 60px;
+        height: 60px;
+        font-size: 1.7rem;
+      }
+      .loading-bar {
+        width: 80px;
+        height: 6px;
+      }
+      .loading-text {
+        font-size: 1rem;
+        margin-top: 1.2rem;
+      }
+      .floating-icon {
+        font-size: 1.3rem !important;
+      }
+    }
+    /* Responsive logo image for header and loading overlay */
+    .fx-logo-img {
+      width: 160px;
+      height: auto;
+      max-width: 80vw;
+      object-fit: contain;
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .fx-logo-img {
+        width: 110px;
+        max-width: 90vw;
+      }
+    }
+    /* Responsive header logo container */
+    .fx-header-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    @media (max-width: 640px) {
+      .fx-header-logo-wrap {
+        gap: 0.3rem;
+      }
+    }
+    /* Hide SVG fallback logo if logo.png loads */
+    .fx-logo-img.loaded + .fx-logo-svg { display: none; }
+  </style>
+  <!-- Favicon: FX logo SVG with colored background for visibility -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236366f1'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='32' font-family='Arial,Helvetica,sans-serif' font-weight='bold' fill='white'%3EFX%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <!-- Loading overlay -->
+  <div id="loadingOverlay">
+    <div class="floating-icons">
+      <span class="floating-icon">₿</span>
+      <span class="floating-icon">Ξ</span>
+      <span class="floating-icon">◎</span>
+      <span class="floating-icon">Ƀ</span>
+      <span class="floating-icon">¤</span>
+    </div>
+    <div class="flex flex-col items-center z-10">
+      <!-- Responsive logo.png, large and centered -->
+      <img src="logo.png" alt="FhatalX Logo" class="fx-logo-img mb-2 rounded-2xl shadow-lg" id="fx-loading-logo" />
+      <!-- SVG fallback for loading overlay (optional, can be removed if logo.png always present) -->
+      <div class="pulse-logo fx-logo-svg p-0" style="background: linear-gradient(120deg, #6366f1 60%, #a5b4fc 100%); display: flex; align-items: center; justify-content: center;">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <rect width="60" height="60" rx="16" fill="#6366f1"/>
+          <text x="30" y="38" text-anchor="middle" font-size="28" font-family="Arial,Helvetica,sans-serif" font-weight="bold" fill="white">FX</text>
+        </svg>
+      </div>
+      <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+      <div class="loading-text">Loading FhatalX<br><span style="font-size:0.9em;">Snapshot • Trends • News • Suggestions</span></div>
+    </div>
+  </div>
+
+  <header class="z-50 glass border-b border-slate-800">
+    <div class="mx-auto max-w-7xl px-2 sm:px-4 py-3 sm:py-4 flex flex-wrap items-center gap-2 sm:gap-3">
+      <!-- Responsive logo.png in header, large and always visible -->
+      <div class="fx-header-logo-wrap">
+        <img src="logo.png" alt="FhatalX Logo" class="fx-logo-img" id="fx-header-logo" />
+        <!-- SVG fallback for header (optional, can be removed if logo.png always present) -->
+        <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-indigo-600/90 grid place-items-center font-bold text-lg sm:text-xl fx-logo-svg">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="7" fill="#6366f1"/>
+            <text x="14" y="20" text-anchor="middle" font-size="13" font-family="Arial,Helvetica,sans-serif" font-weight="bold" fill="white">FX</text>
+          </svg>
+        </div>
+      </div>
+      <div class="ml-auto flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
+        <label class="text-xs sm:text-sm text-slate-300">Fiat</label>
+        <select id="fiat" class="px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-xs sm:text-sm">
+          <option value="usd" selected>USD</option>
+          <option value="eur">EUR</option>
+        </select>
+        <input id="search" placeholder="Search coin… (e.g. sol, arb)" class="px-2 sm:px-3 py-1 rounded-md bg-slate-800 border border-slate-700 w-32 sm:w-44 text-xs sm:text-sm" />
+        <button id="refresh" class="px-2 sm:px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm">Refresh</button>
+      </div>
+    </div>
+  </header>
+  <main class="mx-auto max-w-7xl px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
+    <!-- Suggestions (Predictions) - full width -->
+    <section class="card p-2 sm:p-4 w-full">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold">Suggestions (Quant heuristics)</h2>
+        <div class="text-xs text-slate-400">Not financial advice. Rules described below.</div>
+      </div>
+      <!-- Use single column for idea cards, fill width -->
+      <div id="ideas" class="mt-2 sm:mt-4 grid grid-cols-1 gap-4"></div>
+      <details class="mt-4 text-sm text-slate-300">
+        <summary class="cursor-pointer">Heuristics used</summary>
+        <ul class="list-disc ml-5 mt-2 space-y-1">
+          <li><b>Momentum long</b> – 1h &gt; 0, 24h ≥ 5%, 7d ≥ 10%.</li>
+          <li><b>Dip buy candidate</b> – 24h ≤ −7% while 7d ≥ 0 and Volume/MC &ge; 0.07.</li>
+          <li><b>Reversal watch</b> – 24h &lt; 0 but 1h ≥ 1% and 7d &gt; −3%.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- Snapshot -->
+    <section class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4" id="snapshot">
+      <!-- cards inserted here -->
+    </section>
+
+    <!-- Movers + Trending -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div class="card p-2 sm:p-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Top Movers (24h)</h2>
+          <div class="text-xs text-slate-400" id="moversNote"></div>
+        </div>
+        <div id="movers" class="mt-3 space-y-2"></div>
+      </div>
+
+      <div class="card p-2 sm:p-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Trending (CoinGecko)</h2>
+          <div class="text-xs text-slate-400" id="trendingNote"></div>
+        </div>
+        <div id="trending" class="mt-3 grid sm:grid-cols-2 gap-3"></div>
+      </div>
+
+      <div class="card p-2 sm:p-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Headlines</h2>
+          <div class="text-xs text-slate-400">
+            <span title="Optional API key improves sources">news settings</span>
+          </div>
+        </div>
+        <div id="news" class="mt-4 space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- Notes -->
+    <section class="text-xs text-slate-400 leading-relaxed">
+      <h3 class="font-semibold text-slate-300">Notes</h3>
+      <ul class="list-disc ml-5 mt-2 space-y-1">
+        <li>Market data from CoinGecko public API and Binance API . Rates limited. If requests fail, wait a moment and press Refresh.</li>
+        <li>News: by default uses a key-less RSS → JSON gateway for a few reputable crypto feeds. For stricter CORS or custom sources, paste your own JSON endpoint in the field and press Load.</li>
+        <li>Suggestions are rule-based signals for idea generation only, not advice.</li>
+        <li><b>FhatalX</b> is a quant-driven crypto dashboard for snapshot, trends, and news.</li>
+      </ul>
+    </section>
+  </main>
+  <script>
+    const gecko = {
+      markets: (vs) =>
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${vs}&order=market_cap_desc&per_page=200&page=1&sparkline=false&price_change_percentage=1h,24h,7d,30d`,
+      global: `https://api.coingecko.com/api/v3/global`,
+      trending: `https://api.coingecko.com/api/v3/search/trending`,
+    };
+
+    const els = {
+      fiat: document.getElementById('fiat'),
+      search: document.getElementById('search'),
+      refresh: document.getElementById('refresh'),
+      snapshot: document.getElementById('snapshot'),
+      movers: document.getElementById('movers'),
+      moversNote: document.getElementById('moversNote'),
+      trending: document.getElementById('trending'),
+      trendingNote: document.getElementById('trendingNote'),
+      news: document.getElementById('news'),
+      newsApiUrl: document.getElementById('newsApiUrl'),
+      loadNews: document.getElementById('loadNews'),
+      ideas: document.getElementById('ideas'),
+    };
+
+    const fmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
+    const pct = (v) => (v === null || v === undefined) ? '—' : `${v.toFixed(2)}%`;
+    const cur = (code) => new Intl.NumberFormat(undefined, { style:'currency', currency: code.toUpperCase(), maximumFractionDigits:2 });
+
+    let state = { vs: 'usd', markets: [], global: null, trending: [], filtered: [] };
+
+    function setLoading(container, rows=3){
+      container.innerHTML = '';
+      for(let i=0;i<rows;i++){
+        const d = document.createElement('div');
+        d.className = 'skeleton h-10 rounded-lg';
+        container.appendChild(d);
+      }
+    }
+
+    function badge(val){
+      const good = val >= 0;
+      const cls = good ? 'bg-emerald-900/40 text-emerald-300 border-emerald-700' : 'bg-rose-900/40 text-rose-300 border-rose-700';
+      return `<span class="px-2 py-0.5 text-xs border rounded-md ${cls}">${pct(val)}</span>`;
+    }
+
+    function chip(text){
+      return `<span class="px-2 py-0.5 text-xs rounded-md bg-slate-800 border border-slate-700">${text}</span>`;
+    }
+
+    async function fetchJSON(url){
+      const r = await fetch(url, { headers: { 'accept': 'application/json' }});
+      if(!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    }
+
+    // --- Binance tradable coins cache ---
+    let binanceSymbols = null;
+    async function getBinanceSymbols() {
+      if (binanceSymbols) return binanceSymbols;
+      try {
+        // Binance API returns symbols as trading pairs, e.g. BTCUSDT, ETHUSDT
+        const res = await fetch('https://api.binance.com/api/v3/exchangeInfo');
+        const data = await res.json();
+        // Extract unique baseAsset symbols (e.g. BTC, ETH, SOL)
+        binanceSymbols = new Set(data.symbols.map(s => s.baseAsset.toLowerCase()));
+      } catch (e) {
+        binanceSymbols = new Set(); // fallback: empty set
+      }
+      return binanceSymbols;
+    }
+
+    async function loadAll(){
+      const vs = state.vs;
+      // Pre-skeletons
+      setLoading(els.movers, 6);
+      setLoading(els.trending, 4);
+      els.snapshot.innerHTML = '';
+      for(let i=0;i<4;i++){
+        const s = document.createElement('div'); s.className = 'card p-4 skeleton h-24'; els.snapshot.appendChild(s);
+      }
+      // Fetch data
+      const [global, markets, trending] = await Promise.all([
+        fetchJSON(gecko.global),
+        fetchJSON(gecko.markets(vs)),
+        fetchJSON(gecko.trending),
+      ]);
+
+      state.global = global.data;
+      state.markets = markets;
+      state.filtered = markets;
+      state.trending = trending.coins?.map(c => c.item) || [];
+
+      // --- Filter for Binance-tradable coins for suggestions ---
+      state.binanceTradable = await getBinanceSymbols();
+
+      renderSnapshot();
+      renderMovers();
+      renderTrending();
+      renderIdeas();
+      // Auto-load news on first run
+      if(!els.news.dataset.loaded){ loadNews(); }
+    }
+
+    function renderSnapshot(){
+      const g = state.global;
+      const c = cur(state.vs);
+      const mcap = g.total_market_cap[state.vs] ?? 0;
+      const vol = g.total_volume[state.vs] ?? 0;
+      const btcDom = g.market_cap_percentage?.btc ?? null;
+      const act = g.active_cryptocurrencies;
+
+      const items = [
+        { title:'Total Market Cap', value: c.format(mcap) },
+        { title:'24h Volume', value: c.format(vol) },
+        { title:'BTC Dominance', value: btcDom===null ? '—' : `${btcDom.toFixed(1)}%` },
+        { title:'Active Cryptos', value: fmt.format(act) }
+      ];
+
+      els.snapshot.innerHTML = items.map(x=>`
+        <div class="card p-4">
+          <div class="text-sm text-slate-400">${x.title}</div>
+          <div class="text-2xl font-semibold mt-1">${x.value}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderMovers(){
+      const vs = state.vs.toUpperCase();
+      const c = cur(state.vs);
+      const topUp = [...state.filtered].sort((a,b)=> (b.price_change_percentage_24h||-1) - (a.price_change_percentage_24h||-1)).slice(0,5);
+      const topDown = [...state.filtered].sort((a,b)=> (a.price_change_percentage_24h||1) - (b.price_change_percentage_24h||1)).slice(0,5);
+
+      els.moversNote.textContent = `Top ±24h | ${state.filtered.length} assets`;
+
+      function row(x){
+        return `
+          <div class="flex items-center justify-between rounded-lg border border-slate-700 px-3 py-2">
+            <div class="flex items-center gap-3">
+              <img src="${x.image}" alt="" class="w-6 h-6 rounded-full" />
+              <div>
+                <div class="font-medium">${x.name} <span class="text-slate-400 text-xs">(${x.symbol.toUpperCase()})</span></div>
+                <div class="text-xs text-slate-400">${chip('#'+x.market_cap_rank)} ${chip('Vol/MC ' + ((x.total_volume||0)/(x.market_cap||1)).toFixed(2))}</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="font-semibold">${c.format(x.current_price)}</div>
+              <div>${badge(x.price_change_percentage_24h)}</div>
+            </div>
+          </div>`;
+      }
+
+      els.movers.innerHTML = `
+        <div class="text-xs text-slate-400 mb-1">Gainers</div>
+        ${topUp.map(row).join('')}
+        <div class="text-xs text-slate-400 mt-3 mb-1">Losers</div>
+        ${topDown.map(row).join('')}
+      `;
+    }
+
+    function renderTrending(){
+      els.trendingNote.textContent = `${state.trending.length} coins`;
+      els.trending.innerHTML = state.trending.map(it => `
+        <a target="_blank" href="https://www.coingecko.com/en/coins/${it.id}" class="block rounded-xl border border-slate-700 p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
+          <div class="flex items-center gap-3">
+            <img src="${it.small}" alt="" class="w-7 h-7 rounded-full" />
+            <div class="font-medium">${it.name} <span class="text-slate-400 text-xs">(${it.symbol.toUpperCase()})</span></div>
+          </div>
+          <div class="mt-2 text-xs text-slate-400">Score: ${it.score} • Market Cap Rank: ${it.market_cap_rank ?? '—'}</div>
+        </a>
+      `).join('');
+    }
+
+    function ideaCard(title, coins, note){
+      if(coins.length === 0) return '';
+      return `
+        <div class="border border-slate-700 rounded-xl p-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold">${title}</h3>
+            <div class="text-xs text-slate-400">${note}</div>
+          </div>
+          <div class="mt-2 space-y-4">
+            ${coins.slice(0,8).map(x => {
+              const vmc = ((x.total_volume||0)/(x.market_cap||1));
+              const stopLoss = x.current_price * 0.95;
+              const takeProfit = x.current_price * 1.10;
+              const rrRatio = ((takeProfit - x.current_price) / (x.current_price - stopLoss)).toFixed(2);
+              const pctToTP = ((takeProfit - x.current_price) / x.current_price * 100).toFixed(1);
+              const pctToSL = ((x.current_price - stopLoss) / x.current_price * 100).toFixed(1);
+
+              // Historical price change logic
+              const change1h = x.price_change_percentage_1h_in_currency ?? x.price_change_percentage_1h ?? 0;
+              const change24h = x.price_change_percentage_24h ?? 0;
+              const change7d = x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0;
+
+              let action = "Wait";
+              if (change1h > 0 && change24h >= 5 && change7d >= 10) {
+                action = "Buy";
+              } else if (change24h <= -7 && change7d < 0) {
+                action = "Sell";
+              }
+
+              return `
+              <div class="flex flex-col gap-2 border-b border-slate-800 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <img src="${x.image}" class="w-5 h-5 rounded-full" />
+                  <div class="text-base font-semibold">${x.name} <span class="text-xs text-slate-400">(${x.symbol.toUpperCase()})</span></div>
+                </div>
+                <div class="flex flex-wrap gap-4 text-sm text-slate-400 mb-1">
+                  <div>Current: <span class="font-bold text-slate-100">${cur(state.vs).format(x.current_price)}</span></div>
+                  <div>TP: <span class="font-bold text-emerald-400">${cur(state.vs).format(takeProfit)}</span> <span class="text-xs">(+${pctToTP}%)</span></div>
+                  <div>SL: <span class="font-bold text-rose-400">${cur(state.vs).format(stopLoss)}</span> <span class="text-xs">(-${pctToSL}%)</span></div>
+                  <div>R/R: <span class="font-bold text-indigo-400">${rrRatio}</span></div>
+                </div>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-xs text-slate-400">You should:</span>
+                  <span class="font-bold text-lg ${
+                    action === "Buy" ? "text-emerald-400" : action === "Sell" ? "text-rose-400" : "text-slate-300"
+                  }">${action}</span>
+                </div>
+                <div class="flex flex-wrap gap-4 text-xs text-slate-400 mt-1">
+                  <div>1h: <span class="font-bold">${change1h.toFixed(2)}%</span></div>
+                  <div>24h: <span class="font-bold">${change24h.toFixed(2)}%</span></div>
+                  <div>7d: <span class="font-bold">${change7d.toFixed(2)}%</span></div>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderIdeas(){
+      const m = state.filtered;
+      const binanceSet = state.binanceTradable || new Set();
+      // Only include coins tradable on Binance
+      const onBinance = x => binanceSet.has((x.symbol||'').toLowerCase());
+
+      const pos = (v)=> v!==null && v!==undefined && v>0;
+      const neg = (v)=> v!==null && v!==undefined && v<0;
+
+      const momentum = m.filter(x =>
+        onBinance(x) &&
+        pos(x.price_change_percentage_1h_in_currency) &&
+        (x.price_change_percentage_24h ?? 0) >= 5 &&
+        (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) >= 10
+      ).slice(0,12);
+
+      const dip = m.filter(x =>
+        onBinance(x) &&
+        (x.price_change_percentage_24h ?? 0) <= -7 &&
+        (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) >= 0 &&
+        ((x.total_volume||0)/(x.market_cap||1)) >= 0.07
+      ).slice(0,12);
+
+      const reversal = m.filter(x =>
+        onBinance(x) &&
+        neg(x.price_change_percentage_24h) &&
+        (x.price_change_percentage_1h_in_currency ?? 0) >= 1 &&
+        (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) > -3
+      ).slice(0,12);
+
+      els.ideas.innerHTML = `
+        ${ideaCard('Momentum long candidates', momentum, 'Binance only • 1h, 24h, 7d strength')}
+        ${ideaCard('Dip buy candidates', dip, 'Binance only • Deep 24h drop + healthy 7d')}
+        ${ideaCard('Reversal watchlist', reversal, 'Binance only • 1h bounce vs 24h red')}
+      `;
+    }
+
+    // Search filter
+    els.search.addEventListener('input', (e)=>{
+      const q = e.target.value.trim().toLowerCase();
+      if(!q){ state.filtered = state.markets; }
+      else {
+        state.filtered = state.markets.filter(x =>
+          x.id.includes(q) || x.symbol.toLowerCase().includes(q) || x.name.toLowerCase().includes(q)
+        );
+      }
+      renderMovers(); renderIdeas();
+    });
+
+    els.fiat.addEventListener('change', async (e)=>{
+      state.vs = e.target.value;
+      try { await loadAll(); } catch(err){ alert('Failed to reload: '+err.message); }
+    });
+
+    els.refresh.addEventListener('click', async ()=>{
+      try { await loadAll(); } catch(err){ alert('Refresh failed: '+err.message); }
+    });
+
+    // --- News ---
+    // Default news endpoints (RSS->JSON via publicly available gateway).
+    // If CORS blocks in your environment, paste your own endpoint returning:
+    // [{title, link, published, source}]
+    const defaultNewsFeeds = [
+      // CoinDesk RSS
+      'https://rss2json.com/api.json?rss_url=https://www.coindesk.com/arc/outboundfeeds/rss/?outputType=xml',
+      // Cointelegraph RSS
+      'https://rss2json.com/api.json?rss_url=https://cointelegraph.com/rss',
+      // The Block RSS
+      'https://rss2json.com/api.json?rss_url=https://www.theblock.co/rss.xml'
+    ];
+
+    async function loadNews(customUrl){
+      els.news.dataset.loaded = '1';
+      els.news.innerHTML = '';
+      setLoading(els.news, 5);
+      const urls = customUrl ? [customUrl] : defaultNewsFeeds;
+      let items = [];
+      for(const u of urls){
+        try {
+          const j = await fetchJSON(u);
+          const arr = j.items || j; // tolerate custom JSON array
+          for(const it of arr){
+            items.push({
+              title: it.title,
+              link: it.link || it.guid,
+              published: it.pubDate || it.published || it.date || null,
+              source: (it.author || j.feed?.title || 'Source').toString()
+            });
+          }
+        } catch(e){ /* ignore feed errors */ }
+      }
+      // Deduplicate by title
+      const seen = new Set(); items = items.filter(x=>{ if(seen.has(x.title)) return false; seen.add(x.title); return true; });
+      // Sort by date desc
+      items.sort((a,b)=> new Date(b.published||0) - new Date(a.published||0));
+      els.news.innerHTML = items.slice(0,12).map(n => `
+        <a target="_blank" href="${n.link}" class="block border border-slate-700 rounded-lg p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
+          <div class="text-sm font-medium">${n.title}</div>
+          <div class="text-xs text-slate-400 mt-1">${n.source}${n.published ? ' • ' + new Date(n.published).toLocaleString() : ''}</div>
+        </a>
+      `).join('') || `<div class="text-sm text-slate-400">No news available. Provide a custom JSON endpoint and press Load.</div>`;
+    }
+
+    // Hide loading overlay after initial load, minimum 2.8s for effect
+    let overlayStart = Date.now();
+    async function hideLoadingOverlay() {
+      const overlay = document.getElementById('loadingOverlay');
+      const elapsed = Date.now() - overlayStart;
+      const minDuration = 2800; // was 1800
+      const wait = Math.max(0, minDuration - elapsed);
+      setTimeout(() => {
+        if (overlay) {
+          overlay.classList.add('hide');
+          setTimeout(() => { overlay.style.display = 'none'; }, 1300);
+        }
+      }, wait);
+    }
+
+    // Hide SVG fallback if logo.png loads successfully
+    function hideFallbackLogo(imgId, svgClass) {
+      var img = document.getElementById(imgId);
+      if (!img) return;
+      img.addEventListener('load', function() {
+        img.classList.add('loaded');
+        var svg = img.nextElementSibling;
+        if (svg && svg.classList.contains(svgClass)) svg.style.display = 'none';
+      });
+      img.addEventListener('error', function() {
+        img.style.display = 'none';
+        var svg = img.nextElementSibling;
+        if (svg && svg.classList.contains(svgClass)) svg.style.display = '';
+      });
+    }
+
+    // Initial load
+    (async ()=> {
+      overlayStart = Date.now();
+      try { 
+        await loadAll();
+        hideLoadingOverlay();
+      }
+      catch(err){
+        console.error(err);
+        alert('Failed to load data from CoinGecko. Please try again in a minute.');
+        hideLoadingOverlay();
+      }
+    })();
+
+    hideFallbackLogo('fx-header-logo', 'fx-logo-svg');
+    hideFallbackLogo('fx-loading-logo', 'fx-logo-svg');
+  </script>
+</body>
+</html>
