@@ -1,7 +1,7 @@
 # ⚡ FhatalX
 
 **FhatalX** is a next-generation crypto intelligence dashboard designed for traders, analysts, and enthusiasts who need real-time insights with precision.  
-Powered by quant heuristics and built for speed, FhatalX helps identify momentum, reversal, and dip-buy opportunities across the market — all within a minimalist, data-driven interface.
+Powered by quant heuristics and built for speed, FhatalX helps identify momentum, reversal, and dip-buy opportunities across the market all within a minimalist, data-driven interface.
 
 ---
 
