@@ -225,6 +225,15 @@
     </div>
   </header>
   <main class="mx-auto max-w-7xl px-2 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
+    <!-- Favorites section -->
+    <section id="favoritesSection" class="card p-2 sm:p-4 w-full" style="display:none;">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold">Favorites</h2>
+        <div class="text-xs text-slate-400">Your favorite coins</div>
+      </div>
+      <div id="favorites" class="mt-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3"></div>
+    </section>
+
     <!-- Suggestions (Predictions) - full width -->
     <section class="card p-2 sm:p-4 w-full">
       <div class="flex items-center justify-between">
@@ -386,6 +395,7 @@
       renderMovers();
       renderTrending();
       renderIdeas();
+      renderFavorites();
       // Auto-load news on first run
       if(!els.news.dataset.loaded){ loadNews(); }
     }
@@ -413,6 +423,59 @@
       `).join('');
     }
 
+    // --- FAVORITES LOGIC ---
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem('fx_favorites') || '[]');
+      } catch { return []; }
+    }
+    function setFavorites(arr) {
+      localStorage.setItem('fx_favorites', JSON.stringify(arr));
+    }
+    function isFavorite(id) {
+      return getFavorites().includes(id);
+    }
+    function toggleFavorite(id) {
+      let favs = getFavorites();
+      if (favs.includes(id)) favs = favs.filter(x => x !== id);
+      else favs.push(id);
+      setFavorites(favs);
+      renderFavorites();
+      renderMovers();
+      renderTrending();
+    }
+
+    function renderFavorites() {
+      const favs = getFavorites();
+      const favCoins = state.markets.filter(x => favs.includes(x.id));
+      const favSection = document.getElementById('favoritesSection');
+      const favDiv = document.getElementById('favorites');
+      if (!favCoins.length) {
+        favSection.style.display = 'none';
+        return;
+      }
+      favSection.style.display = '';
+      favDiv.innerHTML = favCoins.map(x => `
+        <div class="flex items-center gap-3 border border-slate-700 rounded-lg p-3">
+          <span class="fav-star cursor-pointer text-2xl select-none ${isFavorite(x.id) ? 'text-yellow-400' : 'text-slate-500'}" data-id="${x.id}" title="Remove from favorites">&#9733;</span>
+          <img src="${x.image}" alt="" class="w-7 h-7 rounded-full" />
+          <div>
+            <div class="font-medium">${x.name} <span class="text-slate-400 text-xs">(${x.symbol.toUpperCase()})</span></div>
+            <div class="text-xs text-slate-400">Price: ${cur(state.vs).format(x.current_price)}</div>
+          </div>
+        </div>
+      `).join('');
+      // Add click listeners
+      favDiv.querySelectorAll('.fav-star').forEach(el => {
+        el.onclick = () => toggleFavorite(el.dataset.id);
+      });
+    }
+
+    // --- Add star icon to Movers and Trending ---
+    function favStar(id) {
+      return `<span class="fav-star cursor-pointer text-xl select-none ${isFavorite(id) ? 'text-yellow-400' : 'text-slate-500'}" data-id="${id}" title="Toggle favorite">&#9733;</span>`;
+    }
+
     function renderMovers(){
       const vs = state.vs.toUpperCase();
       const c = cur(state.vs);
@@ -425,6 +488,7 @@
         return `
           <div class="flex items-center justify-between rounded-lg border border-slate-700 px-3 py-2">
             <div class="flex items-center gap-3">
+              ${favStar(x.id)}
               <img src="${x.image}" alt="" class="w-6 h-6 rounded-full" />
               <div>
                 <div class="font-medium">${x.name} <span class="text-slate-400 text-xs">(${x.symbol.toUpperCase()})</span></div>
@@ -444,19 +508,30 @@
         <div class="text-xs text-slate-400 mt-3 mb-1">Losers</div>
         ${topDown.map(row).join('')}
       `;
+      // Add click listeners for stars
+      els.movers.querySelectorAll('.fav-star').forEach(el => {
+        el.onclick = () => toggleFavorite(el.dataset.id);
+      });
     }
 
     function renderTrending(){
       els.trendingNote.textContent = `${state.trending.length} coins`;
       els.trending.innerHTML = state.trending.map(it => `
-        <a target="_blank" href="https://www.coingecko.com/en/coins/${it.id}" class="block rounded-xl border border-slate-700 p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
-          <div class="flex items-center gap-3">
-            <img src="${it.small}" alt="" class="w-7 h-7 rounded-full" />
-            <div class="font-medium">${it.name} <span class="text-slate-400 text-xs">(${it.symbol.toUpperCase()})</span></div>
-          </div>
-          <div class="mt-2 text-xs text-slate-400">Score: ${it.score} • Market Cap Rank: ${it.market_cap_rank ?? '—'}</div>
-        </a>
+        <div class="flex items-center gap-2 mb-2">
+          ${favStar(it.id)}
+          <a target="_blank" href="https://www.coingecko.com/en/coins/${it.id}" class="block flex-1 rounded-xl border border-slate-700 p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
+            <div class="flex items-center gap-3">
+              <img src="${it.small}" alt="" class="w-7 h-7 rounded-full" />
+              <div class="font-medium">${it.name} <span class="text-slate-400 text-xs">(${it.symbol.toUpperCase()})</span></div>
+            </div>
+            <div class="mt-2 text-xs text-slate-400">Score: ${it.score} • Market Cap Rank: ${it.market_cap_rank ?? '—'}</div>
+          </a>
+        </div>
       `).join('');
+      // Add click listeners for stars
+      els.trending.querySelectorAll('.fav-star').forEach(el => {
+        el.onclick = () => toggleFavorite(el.dataset.id);
+      });
     }
 
     function ideaCard(title, coins, note){
@@ -564,16 +639,18 @@
           x.id.includes(q) || x.symbol.toLowerCase().includes(q) || x.name.toLowerCase().includes(q)
         );
       }
-      renderMovers(); renderIdeas();
+      renderMovers(); renderIdeas(); renderFavorites();
     });
 
     els.fiat.addEventListener('change', async (e)=>{
       state.vs = e.target.value;
       try { await loadAll(); } catch(err){ alert('Failed to reload: '+err.message); }
+      renderFavorites();
     });
 
     els.refresh.addEventListener('click', async ()=>{
       try { await loadAll(); } catch(err){ alert('Refresh failed: '+err.message); }
+      renderFavorites();
     });
 
     // --- News ---
@@ -664,6 +741,7 @@
         alert('Failed to load data from CoinGecko. Please try again in a minute.');
         hideLoadingOverlay();
       }
+      renderFavorites();
     })();
 
     hideFallbackLogo('fx-header-logo', 'fx-logo-svg');
