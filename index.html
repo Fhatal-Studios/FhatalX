@@ -279,7 +279,6 @@
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold">Headlines</h2>
           <div class="text-xs text-slate-400">
-            <span title="Optional API key improves sources">news settings</span>
           </div>
         </div>
         <div id="news" class="mt-4 space-y-3"></div>
@@ -296,6 +295,10 @@
         <li><b>FhatalX</b> is a quant-driven crypto dashboard for snapshot, trends, and news.</li>
       </ul>
     </section>
+    <!-- Copyright -->
+    <footer class="mt-8 mb-2 text-center text-xs text-slate-500">
+      &copy; <span id="fx-year"></span> <a href="https://fhatal.com" class="underline hover:text-indigo-400">fhatal.com</a>
+    </footer>
   </main>
   <script>
     const gecko = {
@@ -516,7 +519,7 @@
 
     function renderTrending(){
       els.trendingNote.textContent = `${state.trending.length} coins`;
-      els.trending.innerHTML = state.trending.map(it => `
+      els.trending.innerHTML = state.trending.map((it, idx) => `
         <div class="flex items-center gap-2 mb-2">
           ${favStar(it.id)}
           <a target="_blank" href="https://www.coingecko.com/en/coins/${it.id}" class="block flex-1 rounded-xl border border-slate-700 p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
@@ -524,7 +527,7 @@
               <img src="${it.small}" alt="" class="w-7 h-7 rounded-full" />
               <div class="font-medium">${it.name} <span class="text-slate-400 text-xs">(${it.symbol.toUpperCase()})</span></div>
             </div>
-            <div class="mt-2 text-xs text-slate-400">Score: ${it.score} • Market Cap Rank: ${it.market_cap_rank ?? '—'}</div>
+            <div class="mt-2 text-xs text-slate-400">Rank: ${idx+1} • Market Cap Rank: ${it.market_cap_rank ?? '—'}</div>
           </a>
         </div>
       `).join('');
@@ -746,6 +749,11 @@
 
     hideFallbackLogo('fx-header-logo', 'fx-logo-svg');
     hideFallbackLogo('fx-loading-logo', 'fx-logo-svg');
+    // Set copyright year
+    document.addEventListener('DOMContentLoaded', function() {
+      var y = document.getElementById('fx-year');
+      if (y) y.textContent = new Date().getFullYear();
+    });
   </script>
 </body>
 </html>
