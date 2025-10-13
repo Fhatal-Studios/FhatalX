@@ -1,0 +1,10 @@
+# robots.txt for https://fhatalx.com/
+
+User-agent: *
+Allow: /
+
+# Disallow common sensitive files
+Disallow: /CNAME
+
+# Sitemap location
+Sitemap: https://fhatalx.com/sitemap.xml
