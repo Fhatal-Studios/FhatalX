@@ -213,6 +213,11 @@
           </svg>
         </div>
       </div>
+      <!-- Move nav here, right after logo -->
+      <nav class="flex items-center gap-2">
+        <a href="index.html" class="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm">Home</a>
+        <a href="terms.html" class="px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 hover:border-indigo-500 hover:bg-slate-800/70 text-sm">Terms</a>
+      </nav>
       <div class="ml-auto flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
         <label class="text-xs sm:text-sm text-slate-300">Fiat</label>
         <select id="fiat" class="px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-xs sm:text-sm">
@@ -296,8 +301,11 @@
       </ul>
     </section>
     <!-- Copyright -->
-    <footer class="mt-8 mb-2 text-center text-xs text-slate-500">
+    <footer class="mt-8 mb-4 text-center text-xs text-slate-500">
       &copy; <span id="fx-year"></span> <a href="https://fhatal.com" class="underline hover:text-indigo-400">fhatal.com</a>
+      · <span class="text-slate-500">
+        Market information is fetched live from public market data APIs. All rights to data and trademarks remain with their respective owners. No affiliation or endorsement implied.
+      </span>
     </footer>
   </main>
   <script>
