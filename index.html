@@ -251,7 +251,7 @@
         <summary class="cursor-pointer">Heuristics used</summary>
         <ul class="list-disc ml-5 mt-2 space-y-1">
           <li><b>Momentum long</b> – 1h &gt; 0, 24h ≥ 5%, 7d ≥ 10%.</li>
-          <li><b>Dip buy candidate</b> – 24h ≤ −7% while 7d ≥ 0 and Volume/MC &ge; 0.07.</li>
+          <li><b>Dip short candidate</b> – 24h ≤ −7% while 7d &lt; 0.</li>
           <li><b>Reversal watch</b> – 24h &lt; 0 but 1h ≥ 1% and 7d &gt; −3%.</li>
         </ul>
       </details>
@@ -545,8 +545,37 @@
       });
     }
 
-    function ideaCard(title, coins, note){
-      if(coins.length === 0) return '';
+    // --- Suggestions logic: always show a card ---
+    function ideaCard(title, coins, note, actionType){
+      // actionType: "Long", "Short", "Wait"
+      if(coins.length === 0) {
+        // Improved placeholder card for empty signals
+        let icon = "";
+        let color = "";
+        if (actionType === "Long") {
+          icon = "&#8599;"; // ↗
+          color = "text-emerald-400";
+        } else if (actionType === "Short") {
+          icon = "&#8600;"; // ↘
+          color = "text-rose-400";
+        } else {
+          icon = "&#8212;"; // —
+          color = "text-slate-400";
+        }
+        return `
+          <div class="border border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center bg-slate-800/60">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-3xl font-bold ${color}">${icon}</span>
+              <span class="text-2xl font-bold ${color}">${actionType}</span>
+            </div>
+            <div class="text-sm text-slate-400 mb-2">${title}</div>
+            <div class="text-xs text-slate-500 mb-4">${note}</div>
+            <div class="px-3 py-1 rounded bg-slate-900/70 border border-slate-700 text-slate-400 text-xs">
+              No signals at the moment.<br>Consider <span class="font-semibold ${color}">${actionType.toUpperCase()}</span> when a setup appears.
+            </div>
+          </div>
+        `;
+      }
       return `
         <div class="border border-slate-700 rounded-xl p-3">
           <div class="flex items-center justify-between">
@@ -556,22 +585,38 @@
           <div class="mt-2 space-y-4">
             ${coins.slice(0,8).map(x => {
               const vmc = ((x.total_volume||0)/(x.market_cap||1));
-              const stopLoss = x.current_price * 0.95;
-              const takeProfit = x.current_price * 1.10;
-              const rrRatio = ((takeProfit - x.current_price) / (x.current_price - stopLoss)).toFixed(2);
-              const pctToTP = ((takeProfit - x.current_price) / x.current_price * 100).toFixed(1);
-              const pctToSL = ((x.current_price - stopLoss) / x.current_price * 100).toFixed(1);
-
-              // Historical price change logic
+              // --- Futures logic: TP/SL depend on action ---
+              // Determine action for this coin
+              let action = "Wait";
               const change1h = x.price_change_percentage_1h_in_currency ?? x.price_change_percentage_1h ?? 0;
               const change24h = x.price_change_percentage_24h ?? 0;
               const change7d = x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0;
-
-              let action = "Wait";
               if (change1h > 0 && change24h >= 5 && change7d >= 10) {
-                action = "Buy";
+                action = "Long";
               } else if (change24h <= -7 && change7d < 0) {
-                action = "Sell";
+                action = "Short";
+              }
+
+              let takeProfit, stopLoss, rrRatio, pctToTP, pctToSL;
+              if (action === "Short") {
+                // For short: TP is below, SL is above
+                takeProfit = x.current_price * 0.90; // 10% down
+                stopLoss = x.current_price * 1.05;   // 5% up
+                pctToTP = ((x.current_price - takeProfit) / x.current_price * 100).toFixed(1);
+                pctToSL = ((stopLoss - x.current_price) / x.current_price * 100).toFixed(1);
+                rrRatio = ((x.current_price - takeProfit) / (stopLoss - x.current_price)).toFixed(2);
+              } else if (action === "Long") {
+                // For long: TP is above, SL is below
+                takeProfit = x.current_price * 1.10; // 10% up
+                stopLoss = x.current_price * 0.95;   // 5% down
+                pctToTP = ((takeProfit - x.current_price) / x.current_price * 100).toFixed(1);
+                pctToSL = ((x.current_price - stopLoss) / x.current_price * 100).toFixed(1);
+                rrRatio = ((takeProfit - x.current_price) / (x.current_price - stopLoss)).toFixed(2);
+              } else {
+                // Wait: show neutral
+                takeProfit = x.current_price;
+                stopLoss = x.current_price;
+                pctToTP = pctToSL = rrRatio = "—";
               }
 
               return `
@@ -582,14 +627,14 @@
                 </div>
                 <div class="flex flex-wrap gap-4 text-sm text-slate-400 mb-1">
                   <div>Current: <span class="font-bold text-slate-100">${cur(state.vs).format(x.current_price)}</span></div>
-                  <div>TP: <span class="font-bold text-emerald-400">${cur(state.vs).format(takeProfit)}</span> <span class="text-xs">(+${pctToTP}%)</span></div>
-                  <div>SL: <span class="font-bold text-rose-400">${cur(state.vs).format(stopLoss)}</span> <span class="text-xs">(-${pctToSL}%)</span></div>
+                  <div>TP: <span class="font-bold text-emerald-400">${cur(state.vs).format(takeProfit)}</span> <span class="text-xs">(${action === "Short" ? "-" : "+"}${pctToTP}%)</span></div>
+                  <div>SL: <span class="font-bold text-rose-400">${cur(state.vs).format(stopLoss)}</span> <span class="text-xs">(${action === "Short" ? "+" : "-"}${pctToSL}%)</span></div>
                   <div>R/R: <span class="font-bold text-indigo-400">${rrRatio}</span></div>
                 </div>
                 <div class="flex items-center gap-2 mt-1">
                   <span class="text-xs text-slate-400">You should:</span>
                   <span class="font-bold text-lg ${
-                    action === "Buy" ? "text-emerald-400" : action === "Sell" ? "text-rose-400" : "text-slate-300"
+                    action === "Long" ? "text-emerald-400" : action === "Short" ? "text-rose-400" : "text-slate-300"
                   }">${action}</span>
                 </div>
                 <div class="flex flex-wrap gap-4 text-xs text-slate-400 mt-1">
@@ -623,8 +668,7 @@
       const dip = m.filter(x =>
         onBinance(x) &&
         (x.price_change_percentage_24h ?? 0) <= -7 &&
-        (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) >= 0 &&
-        ((x.total_volume||0)/(x.market_cap||1)) >= 0.07
+        (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) < 0
       ).slice(0,12);
 
       const reversal = m.filter(x =>
@@ -635,9 +679,9 @@
       ).slice(0,12);
 
       els.ideas.innerHTML = `
-        ${ideaCard('Momentum long candidates', momentum, 'Binance only • 1h, 24h, 7d strength')}
-        ${ideaCard('Dip buy candidates', dip, 'Binance only • Deep 24h drop + healthy 7d')}
-        ${ideaCard('Reversal watchlist', reversal, 'Binance only • 1h bounce vs 24h red')}
+        ${ideaCard('Momentum long candidates', momentum, 'Binance only • 1h, 24h, 7d strength', 'Long')}
+        ${ideaCard('Dip short candidates', dip, 'Binance only • Deep 24h drop + weak 7d', 'Short')}
+        ${ideaCard('Reversal watchlist', reversal, 'Binance only • 1h bounce vs 24h red', 'Wait')}
       `;
     }
 
@@ -659,9 +703,14 @@
       renderFavorites();
     });
 
-    els.refresh.addEventListener('click', async ()=>{
-      try { await loadAll(); } catch(err){ alert('Refresh failed: '+err.message); }
-      renderFavorites();
+    // --- Refresh button fix ---
+    els.refresh.addEventListener('click', async ()=> {
+      try {
+        await loadAll();
+        renderFavorites();
+      } catch(err) {
+        alert('Refresh failed: '+err.message);
+      }
     });
 
     // --- News ---
