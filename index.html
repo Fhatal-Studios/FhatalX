@@ -170,10 +170,32 @@
     }
     /* Hide SVG fallback logo if logo.png loads */
     .fx-logo-img.loaded + .fx-logo-svg { display: none; }
+
+    /* Ad banner styles */
+    .fx-ad-banner {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 160px;
+      z-index: 1050;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      background: transparent;
+    }
+    .fx-ad-banner-left { left: 0; }
+    .fx-ad-banner-right { right: 0; }
+    @media (max-width: 1200px) {
+      .fx-ad-banner { display: none !important; }
+    }
   </style>
   <!-- Favicon: FX logo SVG with colored background for visibility -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236366f1'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='32' font-family='Arial,Helvetica,sans-serif' font-weight='bold' fill='white'%3EFX%3C/text%3E%3C/svg%3E">
   <link rel="icon" type="image/png" href="logo.png">
+  <!-- AdSense script for ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2697517525197581"
+     crossorigin="anonymous"></script>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100">
   <!-- Loading overlay -->
@@ -188,13 +210,7 @@
     <div class="flex flex-col items-center z-10">
       <!-- Responsive logo.png, large and centered -->
       <img src="logo.png" alt="FhatalX Logo" class="fx-logo-img mb-2 rounded-2xl shadow-lg" id="fx-loading-logo" />
-      <!-- SVG fallback for loading overlay (optional, can be removed if logo.png always present) -->
-      <div class="pulse-logo fx-logo-svg p-0" style="background: linear-gradient(120deg, #6366f1 60%, #a5b4fc 100%); display: flex; align-items: center; justify-content: center;">
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-          <rect width="60" height="60" rx="16" fill="#6366f1"/>
-          <text x="30" y="38" text-anchor="middle" font-size="28" font-family="Arial,Helvetica,sans-serif" font-weight="bold" fill="white">FX</text>
-        </svg>
-      </div>
+      <!-- Removed SVG fallback for loading overlay -->
       <div class="loading-bar"><div class="loading-bar-inner"></div></div>
       <div class="loading-text">Loading FhatalX<br><span style="font-size:0.9em;">Snapshot • Trends • News • Suggestions</span></div>
     </div>
@@ -205,13 +221,7 @@
       <!-- Responsive logo.png in header, large and always visible -->
       <div class="fx-header-logo-wrap">
         <img src="logo.png" alt="FhatalX Logo" class="fx-logo-img" id="fx-header-logo" />
-        <!-- SVG fallback for header (optional, can be removed if logo.png always present) -->
-        <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-indigo-600/90 grid place-items-center font-bold text-lg sm:text-xl fx-logo-svg">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect width="28" height="28" rx="7" fill="#6366f1"/>
-            <text x="14" y="20" text-anchor="middle" font-size="13" font-family="Arial,Helvetica,sans-serif" font-weight="bold" fill="white">FX</text>
-          </svg>
-        </div>
+        <!-- Removed SVG fallback for header -->
       </div>
       <!-- Move nav here, right after logo -->
       <nav class="flex items-center gap-2">
@@ -308,6 +318,26 @@
       </span>
     </footer>
   </main>
+  <!-- Left Ad Banner -->
+  <div class="fx-ad-banner fx-ad-banner-left">
+    <ins class="adsbygoogle"
+         style="display:block;width:160px;height:600px"
+         data-ad-client="ca-pub-2697517525197581"
+         data-ad-slot="1234567890"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  <!-- Right Ad Banner -->
+  <div class="fx-ad-banner fx-ad-banner-right">
+    <ins class="adsbygoogle"
+         style="display:block;width:160px;height:600px"
+         data-ad-client="ca-pub-2697517525197581"
+         data-ad-slot="1234567890"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
   <script>
     const gecko = {
       markets: (vs) =>
