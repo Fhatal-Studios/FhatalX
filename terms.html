@@ -2,193 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>FhatalX – Terms of Service & Disclaimer</title>
+  <title>FhatalX — Terms of Use</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="color-scheme" content="dark light" />
   <style>
-    :root { --ring: rgba(109,94,247,.35); }
-    .card { @apply bg-slate-900/70 border border-slate-700 rounded-2xl shadow-xl; }
-    .glass { @apply bg-slate-800/50 backdrop-blur; }
-    .prose-title { @apply text-2xl sm:text-3xl font-semibold text-slate-100; }
-    .prose-h2 { @apply text-xl sm:text-2xl font-semibold text-slate-100 mt-8; }
-    .prose-p  { @apply text-slate-300 leading-relaxed; }
-    .prose-li { @apply text-slate-300 leading-relaxed; }
-    .kbd      { @apply px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-slate-200 text-xs; }
+    :root{ --brand1:#6366f1; --brand2:#a855f7; }
+    .card{ @apply bg-slate-900/70 border border-slate-700 rounded-2xl shadow-xl; }
+    .btn-ghost{
+      display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
+      border-radius: 12px; padding: .625rem 1rem; font-size: .875rem; font-weight: 600; line-height: 1;
+      border: 1px solid #475569; color:#e2e8f0; text-decoration:none;
+      background: linear-gradient(180deg, rgba(148,163,184,.08), rgba(148,163,184,.02));
+      transition: background .2s ease, border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+    }
+    .btn-ghost:hover{ border-color: var(--brand1); background: rgba(99,102,241,.08); transform: translateY(-1px); }
+    .btn-ghost:active{ transform: translateY(0); }
+    .btn-ghost:focus-visible{ outline:none; box-shadow: 0 0 0 3px rgba(109,94,247,.35); }
+    body{ background: radial-gradient(1200px 800px at 20% 10%,#0e1530 0%,#0b0f1a 55%,#06080f 100%); color:#e5e7eb; }
+    a.link{ color:#c7d2fe; text-decoration: underline; }
+    h2{ @apply text-xl font-bold mt-8; }
+    h3{ @apply text-lg font-semibold mt-6; }
+    p,li{ @apply text-slate-300; }
   </style>
-  <!-- Favicon (same style as main) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%236366f1'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='32' font-family='Arial,Helvetica,sans-serif' font-weight='bold' fill='white'%3EFX%3C/text%3E%3C/svg%3E">
-  <link rel="icon" type="image/png" href="logo.png">
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100">
-  <!-- Header - matches main (logo only, no FX fallback) -->
-  <header class="z-50 glass border-b border-slate-800">
-    <div class="mx-auto max-w-7xl px-2 sm:px-4 py-3 sm:py-4 flex flex-wrap items-center gap-3">
-      <div class="flex items-center gap-2">
-        <img src="logo.png" alt="FhatalX Logo" class="w-40 max-w-[80vw] h-auto rounded-2xl shadow-lg" />
-      </div>
-      <!-- Move nav right after logo, not at the far right -->
-      <nav class="flex items-center gap-2">
-        <a href="index.html" class="px-3 py-1 rounded-lg bg-slate-800 border border-slate-700 hover:border-indigo-500 hover:bg-slate-800/70 text-sm">Home</a>
-        <a href="terms.html" class="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm">Terms</a>
+<body class="min-h-screen">
+  <header class="sticky top-0 z-40 bg-slate-900/50 backdrop-blur border-b border-slate-800">
+    <div class="mx-auto max-w-5xl px-3 py-3 flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="logo.png" alt="FhatalX" class="w-36 h-auto rounded-xl" />
+      </a>
+      <nav class="ml-auto flex items-center gap-2">
+        <a href="index.html" class="btn-ghost">Home</a>
+        <a href="analytics.html" class="btn-ghost">Analytics</a>
+        <a href="terms.html" class="btn-ghost">Terms</a>
       </nav>
     </div>
   </header>
 
-  <main class="mx-auto max-w-4xl px-2 sm:px-4 py-6 sm:py-8">
-    <!-- Title card -->
-    <section class="card p-5 sm:p-7">
-      <h1 class="prose-title">FhatalX – Terms of Service & Disclaimer</h1>
-      <p class="prose-p mt-2 text-sm text-slate-400">Last updated: <span id="fx-updated">October 2025</span></p>
-      <p class="prose-p mt-4">
-        FhatalX (“the App”) is a crypto market analytics and visualization tool operated by Fhatal Studios. By accessing or using the App you agree to these Terms of Service (“Terms”). If you do not agree, do not use the App.
+  <main class="mx-auto max-w-5xl px-3 py-8">
+    <h1 class="text-3xl font-black">Terms of Use</h1>
+    <p class="mt-2 text-slate-300 text-sm">Last updated: <span id="date"></span></p>
+
+    <section class="card p-5 mt-5">
+      <h2>1. Overview</h2>
+      <p class="mt-2">
+        FhatalX is a crypto-market dashboard offering snapshot metrics, trend views, news aggregation, and rule-based heuristic signals. FhatalX does not provide investment advice or brokerage services.
+      </p>
+
+      <h2>2. No Financial Advice</h2>
+      <p class="mt-2">
+        All information is provided solely for informational and educational purposes and should not be considered financial, investment, legal, accounting, or tax advice. You are responsible for your decisions and for complying with applicable laws and exchange rules.
+      </p>
+
+      <h2>3. Market Data and Sources</h2>
+      <p class="mt-2">
+        Quotes, metrics, and trend information are fetched live from third-party providers that may change, throttle, or restrict access. Data can be delayed, incomplete, or inaccurate.
+      </p>
+
+      <h3>3.1 Provider Attribution</h3>
+      <ul class="list-disc ml-6 mt-2 space-y-1">
+        <li>Market snapshots and trending: public endpoints such as CoinGecko.</li>
+        <li>Tradability filters: public Binance exchange info.</li>
+        <li>News: RSS feeds converted to JSON via gateway services.</li>
+      </ul>
+      <p class="mt-2 text-sm text-slate-400">
+        All trademarks, logos, and data remain property of their respective owners. No affiliation or endorsement is implied. Usage must comply with each provider’s terms and rate limits.
+      </p>
+
+      <h2>4. Availability and Rate Limits</h2>
+      <p class="mt-2">
+        APIs can fail or rate-limit. FhatalX may temporarily cache or reduce requests. Features can be modified, suspended, or removed without notice.
+      </p>
+
+      <h2>5. Acceptable Use</h2>
+      <ul class="list-disc ml-6 mt-2 space-y-1">
+        <li>No scraping or re-distribution that violates provider policies.</li>
+        <li>No circumvention of rate limits, authentication, or access controls.</li>
+        <li>No attempts to use the site for unlawful activities.</li>
+      </ul>
+
+      <h2>6. Liability</h2>
+      <p class="mt-2">
+        FhatalX is provided “as is” without warranties of any kind. To the maximum extent permitted by law, FhatalX will not be liable for any indirect, incidental, special, consequential, or exemplary damages, or for loss of profits, revenue, or data.
+      </p>
+
+      <h2>7. Privacy</h2>
+      <p class="mt-2">
+        FhatalX may use analytics or logs to improve stability and performance. Do not input sensitive personal data. See any separate privacy notice if provided.
+      </p>
+
+      <h2>8. Changes</h2>
+      <p class="mt-2">
+        We may update these Terms at any time. Continued use after changes constitutes acceptance of the updated Terms.
+      </p>
+
+      <h2>9. Contact</h2>
+      <p class="mt-2">
+        For questions about these Terms, contact us via the channels listed on our main site.
       </p>
     </section>
 
-    <!-- Sections -->
-    <section class="mt-6 space-y-6">
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">1. Nature of Service</h2>
-        <p class="prose-p mt-2">
-          FhatalX is a software application not a financial data provider, broker, or investment advisor. The App displays market information and derived analytics solely for informational and educational purposes.
-        </p>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">2. Data Sources and Attribution</h2>
-        <p class="prose-p mt-2">
-          Market information shown in FhatalX is fetched in real time from publicly available cryptocurrency market APIs. FhatalX does not store, redistribute, resell, or sub-license third-party market data and does not provide an API for market data. Any references to providers or exchanges are descriptive only.
-        </p>
-        <p class="prose-p mt-3">
-          Neutral Attribution (used in footer and help text):
-        </p>
-        <blockquote class="border-l-4 border-slate-700 pl-4 text-slate-300">
-          Market information displayed in FhatalX is fetched live from public market data APIs. All rights to the data and trademarks remain with their respective owners. FhatalX is not affiliated with, endorsed, or sponsored by any data provider or exchange.
-        </blockquote>
-        <ul class="list-disc ml-6 mt-4 space-y-2">
-          <li class="prose-li">No third-party logos or brand assets are used in the App.</li>
-          <li class="prose-li">No implication of endorsement or sponsorship by any provider is made.</li>
-        </ul>
-      </div>
-
-      <!-- NEW: Provider Attribution Format (text-only, compliant) -->
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">3. Provider Attribution Format</h2>
-        <p class="prose-p mt-2">
-          For clarity and neutrality, provider names appear only as text examples below. These phrases may be used in the App’s notes or legal pages. They must not imply affiliation, endorsement, or sponsorship, and no provider logos are used.
-        </p>
-        <ul class="list-disc ml-6 mt-3 space-y-3">
-          <li class="prose-li">
-            <span class="font-semibold">CoinGecko:</span>
-            <span class="block mt-1 text-slate-300">“Data from CoinGecko API.”</span>
-            <span class="block text-slate-400 text-xs">Text-only; no logo; no suggestion of endorsement. Optional link to their API documentation in legal pages only.</span>
-          </li>
-          <li class="prose-li">
-            <span class="font-semibold">Binance:</span>
-            <span class="block mt-1 text-slate-300">“Market information sourced from public Binance API endpoints.”</span>
-            <span class="block text-slate-400 text-xs">Text-only; avoid implying “official” or “endorsed by Binance.” Do not use Binance marks.</span>
-          </li>
-          <li class="prose-li">
-            <span class="font-semibold">CoinMarketCap:</span>
-            <span class="block mt-1 text-slate-300">“Market information from CoinMarketCap API.”</span>
-            <span class="block text-slate-400 text-xs">Text-only; no logo; no resale or redistribution of their data. If used, keep purely descriptive.</span>
-          </li>
-        </ul>
-        <p class="prose-p mt-3 text-slate-400 text-xs">
-          Trademarks are the property of their respective owners. Provider names are shown for identification purposes only. No affiliation or endorsement is implied.
-        </p>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">4. No Financial Advice</h2>
-        <p class="prose-p mt-2">
-          The App and its outputs including signals, heuristics, and analytics do not constitute financial, investment, or trading advice. You are solely responsible for your decisions and any resulting outcomes. Use of the App does not create a fiduciary relationship.
-        </p>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">5. Acceptable Use</h2>
-        <ul class="list-disc ml-6 mt-2 space-y-2">
-          <li class="prose-li">Do not extract, cache, bulk-download, or redistribute third-party data displayed by the App.</li>
-          <li class="prose-li">Do not misrepresent the origin of data or imply official status, endorsement, or sponsorship.</li>
-          <li class="prose-li">Do not reverse engineer, overload, or abuse external APIs accessed via the App.</li>
-          <li class="prose-li">Comply with applicable laws and the terms of any external API you access through the App.</li>
-        </ul>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">6. Accounts, Privacy, and Data</h2>
-        <p class="prose-p mt-2">
-          If you create an account you may store minimal preferences such as favorites and UI settings. No trading credentials, wallet keys, or financial histories are collected by the App. Personal data is handled according to our Privacy Policy.
-        </p>
-        <ul class="list-disc ml-6 mt-3 space-y-2">
-          <li class="prose-li">The App fetches market information live and displays it on the page.</li>
-          <li class="prose-li">The App does not store or resell third-party market data.</li>
-          <li class="prose-li">Derived values (e.g., momentum or reversal heuristics) are computed within the App for informational purposes.</li>
-        </ul>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">7. Commercial Model</h2>
-        <p class="prose-p mt-2">
-          Fees relate only to software features for example saved favorites, alerts, UI customization, and extended analytics. You are not purchasing or licensing third-party market data through FhatalX.
-        </p>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">8. Availability and Limitations</h2>
-        <ul class="list-disc ml-6 mt-2 space-y-2">
-          <li class="prose-li">External API availability and accuracy are outside our control.</li>
-          <li class="prose-li">Service features may change without notice to maintain compliance and reliability.</li>
-        </ul>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">9. Disclaimers and Limitation of Liability</h2>
-        <p class="prose-p mt-2">
-          The App is provided “as is” without warranties of any kind. Fhatal Studios and its affiliates will not be liable for indirect, incidental, special, consequential, or exemplary damages, or loss of profits, revenues, data, or goodwill arising from or related to your use of the App.
-        </p>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">10. Changes to Terms</h2>
-        <p class="prose-p mt-2">
-          We may update these Terms from time to time. Continued use of the App after changes become effective constitutes acceptance of the updated Terms.
-        </p>
-      </div>
-
-      <div class="card p-5 sm:p-7">
-        <h2 class="prose-h2">11. Contact</h2>
-        <p class="prose-p mt-2">
-          Fhatal Studios<br/>
-          Email: <a href="mailto:support@fhatal.com" class="text-indigo-400 underline">support@fhatal.com</a><br/>
-          Website: <a href="https://fhatal.com" class="text-indigo-400 underline">fhatal.com</a>
-        </p>
-      </div>
-    </section>
-
-    <!-- Footer - matches main -->
-    <footer class="mt-8 mb-4 text-center text-xs text-slate-500">
-      &copy; <span id="fx-year"></span> <a href="https://fhatal.com" class="underline hover:text-indigo-400">fhatal.com</a>
-      · <span class="text-slate-500">
-        Market information is fetched live from public market data APIs. All rights to data and trademarks remain with their respective owners. No affiliation or endorsement implied.
-      </span>
+    <footer class="mt-8 mb-6 text-center text-xs text-slate-500">
+      © <span id="year"></span> FhatalX · Snapshot • Trends • News • Suggestions
     </footer>
   </main>
 
   <script>
-    // Set years
-    (function() {
-      const y = document.getElementById('fx-year');
-      if (y) y.textContent = new Date().getFullYear();
-      const upd = document.getElementById('fx-updated');
-      if (upd && !upd.dataset.fixed) {
-        const d = new Date();
-        const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-        upd.textContent = months[d.getMonth()] + " " + d.getFullYear();
-      }
-    })();
+    const d=new Date(); 
+    document.getElementById('year').textContent = d.getFullYear();
+    document.getElementById('date').textContent = d.toLocaleDateString();
   </script>
 </body>
 </html>
