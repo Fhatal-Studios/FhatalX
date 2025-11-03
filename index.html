@@ -74,85 +74,82 @@
       0%{ transform: translateX(0) }
       100%{ transform: translateX(-50%) }
     }
-    body{ background: radial-gradient(1200px 800px at 20% 10%,#0e1530 0%,#0b0f1a 55%,#06080f 100%); color: var(--text); }
+    body{ background: radial-gradient(1200px 800px at 20% 10%,#0e1530 0%,#0b0f1a 55%,#06080f 100%); color: var(--text); overflow-x: hidden; }
+    * { box-sizing: border-box; }
   </style>
 </head>
 <body class="min-h-screen">
-  <!-- Top nav -->
   <header class="sticky top-0 z-40 glass border-b border-slate-800">
-    <div class="mx-auto max-w-7xl px-3 py-3 flex items-center gap-3">
-      <a href="index.html" class="flex items-center gap-2">
-        <img src="logo.png" alt="FhatalX" class="w-36 h-auto rounded-xl" />
+    <div class="mx-auto max-w-5xl px-2 sm:px-6 py-2 sm:py-3 flex items-center gap-1 sm:gap-3">
+      <a href="index.html" class="flex items-center gap-1">
+        <img src="logo.png" alt="FhatalX" class="w-16 sm:w-36 h-auto rounded-xl" />
       </a>
-      <nav class="ml-auto flex items-center gap-2">
-        <a href="index.html" class="btn-ghost">Home</a>
-        <a href="analytics.html" class="btn-ghost">Analytics</a>
-        <a href="terms.html" class="btn-ghost">Terms</a>
-        <a href="#get-started" class="btn">Get Started</a>
+      <nav class="ml-auto flex items-center gap-1 sm:gap-2 flex-wrap">
+        <a href="index.html" class="btn-ghost text-xs sm:text-base px-2 py-2 sm:px-4">Home</a>
+        <a href="analytics.html" class="btn-ghost text-xs sm:text-base px-2 py-2 sm:px-4">Analytics</a>
+        <a href="terms.html" class="btn-ghost text-xs sm:text-base px-2 py-2 sm:px-4">Terms</a>
+        <a href="#get-started" class="btn text-xs sm:text-base px-2 py-2 sm:px-4 whitespace-nowrap">Get Started</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="mx-auto max-w-7xl px-3 pt-10 sm:pt-14">
-    <div class="grid md:grid-cols-2 gap-8 items-center">
+  <section class="mx-auto max-w-5xl px-2 sm:px-6 pt-3 sm:pt-12">
+    <div class="space-y-4 sm:space-y-6">
       <div>
-        <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+        <h1 class="text-sm sm:text-3xl font-black leading-tight">
           FhatalX - <span class="text-indigo-400">Snapshot</span>, Trends, News, <span class="text-cyan-300">Suggestions</span>
         </h1>
-        <p class="mt-4 text-slate-300">
+        <p class="mt-2 text-xs sm:text-base text-slate-300">
           A quant-driven crypto dashboard with rule-based signals. Built for speed, clarity, and live market awareness.
         </p>
-        <div class="mt-6 flex gap-2">
-          <a href="analytics.html" class="btn">Open Analytics</a>
-          <a href="terms.html" class="btn-ghost">Read Terms</a>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a href="analytics.html" class="btn text-xs sm:text-base px-3 py-2">Open Analytics</a>
+          <a href="terms.html" class="btn-ghost text-xs sm:text-base px-3 py-2">Read Terms</a>
         </div>
-        <!-- KPIs -->
-        <div class="mt-8 grid grid-cols-3 gap-3">
-          <div class="card p-4 text-center">
+        <div class="mt-3 grid grid-cols-3 gap-1.5 sm:gap-3">
+          <div class="card p-1.5 sm:p-4 text-center">
             <div class="text-xs text-slate-400">Assets</div>
-            <div id="kpi-assets" class="text-2xl font-bold">—</div>
+            <div id="kpi-assets" class="text-sm sm:text-2xl font-bold">—</div>
           </div>
-          <div class="card p-4 text-center">
+          <div class="card p-1.5 sm:p-4 text-center">
             <div class="text-xs text-slate-400">Signals</div>
-            <div id="kpi-sigs" class="text-2xl font-bold">—</div>
+            <div id="kpi-sigs" class="text-sm sm:text-2xl font-bold">—</div>
           </div>
-          <div class="card p-4 text-center">
+          <div class="card p-1.5 sm:p-4 text-center">
             <div class="text-xs text-slate-400">Feeds</div>
-            <div id="kpi-feeds" class="text-2xl font-bold">—</div>
+            <div id="kpi-feeds" class="text-sm sm:text-2xl font-bold">—</div>
           </div>
         </div>
       </div>
 
-      <!-- 3D panel -->
       <div class="scene">
-        <div id="tilt" class="layer relative rounded-3xl p-6 bg-slate-900/60 border border-slate-700 glow">
+        <div id="tilt" class="layer relative rounded-xl sm:rounded-2xl p-2 sm:p-6 bg-slate-900/60 border border-slate-700 glow">
           <div class="grad-ring"></div>
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2">
             <div class="text-slate-300">
               <div class="text-xs">Demo</div>
-              <div class="text-xl font-semibold">Momentum, Dip, Reversal</div>
+              <div class="text-xs sm:text-xl font-semibold">Momentum, Dip, Reversal</div>
             </div>
-            <div class="rounded-xl px-3 py-1 text-xs border border-slate-600">Live Preview</div>
+            <div class="rounded-lg px-2 py-0.5 text-xs border border-slate-600 whitespace-nowrap">Live Preview</div>
           </div>
-          <div class="mt-4 grid grid-cols-3 gap-3">
-            <div class="rounded-2xl p-4 border border-slate-700 bg-slate-800/50 floating">
+          <div class="mt-2 sm:mt-3 grid grid-cols-3 gap-1.5 sm:gap-2">
+            <div class="rounded-lg sm:rounded-xl p-1.5 sm:p-4 border border-slate-700 bg-slate-800/50 floating">
               <div class="text-xs text-slate-400">Momentum</div>
-              <div class="text-lg font-semibold text-emerald-300">↗ Long</div>
+              <div class="text-xs sm:text-lg font-semibold text-emerald-300">↗ Long</div>
             </div>
-            <div class="rounded-2xl p-4 border border-slate-700 bg-slate-800/50 floating" style="animation-delay:.5s">
+            <div class="rounded-lg sm:rounded-xl p-1.5 sm:p-4 border border-slate-700 bg-slate-800/50 floating" style="animation-delay:.5s">
               <div class="text-xs text-slate-400">Dip</div>
-              <div class="text-lg font-semibold text-rose-300">↘ Short</div>
+              <div class="text-xs sm:text-lg font-semibold text-rose-300">↘ Short</div>
             </div>
-            <div class="rounded-2xl p-4 border border-slate-700 bg-slate-800/50 floating" style="animation-delay:1s">
+            <div class="rounded-lg sm:rounded-xl p-1.5 sm:p-4 border border-slate-700 bg-slate-800/50 floating" style="animation-delay:1s">
               <div class="text-xs text-slate-400">Reversal</div>
-              <div class="text-lg font-semibold text-indigo-300">— Watch</div>
+              <div class="text-xs sm:text-lg font-semibold text-indigo-300">— Watch</div>
             </div>
           </div>
-          <div class="mt-6">
-            <div class="text-xs text-slate-400 mb-2">Sample Ticker</div>
-            <div class="relative overflow-hidden rounded-xl border border-slate-700 bg-slate-800/60 ticker">
-              <div class="whitespace-nowrap flex ticker-track">
+          <div class="mt-3 sm:mt-6">
+            <div class="text-xs text-slate-400 mb-1">Sample Ticker</div>
+            <div class="relative overflow-hidden rounded-lg sm:rounded-xl border border-slate-700 bg-slate-800/60 ticker">
+              <div class="whitespace-nowrap flex ticker-track text-xs">
                 <div class="px-4 py-2">BTC +1.2%</div>
                 <div class="px-4 py-2">ETH +0.8%</div>
                 <div class="px-4 py-2">SOL -2.1%</div>
@@ -178,34 +175,33 @@
     </div>
   </section>
 
-  <!-- Features -->
-  <section id="get-started" class="mx-auto max-w-7xl px-3 py-12">
-    <h2 class="text-2xl font-bold">Why FhatalX</h2>
-    <p class="text-slate-300 mt-2">Opinionated heuristics, fast UI, and pragmatic signals.</p>
-    <div class="grid md:grid-cols-3 gap-4 mt-6">
-      <div class="card p-5">
-        <div class="text-sm text-slate-400">1</div>
-        <div class="text-lg font-semibold mt-1">Snapshot & Movers</div>
-        <p class="text-slate-300 text-sm mt-2">Market cap, volume, BTC dominance, and daily leaders/laggards.</p>
+  <section id="get-started" class="mx-auto max-w-5xl px-2 sm:px-6 py-4 sm:py-8">
+    <h2 class="text-sm sm:text-2xl font-bold">Why FhatalX</h2>
+    <p class="text-xs sm:text-base text-slate-300 mt-1">Opinionated heuristics, fast UI, and pragmatic signals.</p>
+    <div class="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
+      <div class="card p-2 sm:p-5">
+        <div class="text-xs sm:text-sm text-slate-400">1</div>
+        <div class="text-xs sm:text-lg font-semibold mt-1">Snapshot & Movers</div>
+        <p class="text-xs sm:text-base text-slate-300 mt-1">Market cap, volume, BTC dominance, and daily leaders/laggards.</p>
       </div>
-      <div class="card p-5">
-        <div class="text-sm text-slate-400">2</div>
-        <div class="text-lg font-semibold mt-1">Trending & News</div>
-        <p class="text-slate-300 text-sm mt-2">CoinGecko trending list plus curated crypto headlines.</p>
+      <div class="card p-2 sm:p-5">
+        <div class="text-xs sm:text-sm text-slate-400">2</div>
+        <div class="text-xs sm:text-lg font-semibold mt-1">Trending & News</div>
+        <p class="text-xs sm:text-base text-slate-300 mt-1">CoinGecko trending list plus curated crypto headlines.</p>
       </div>
-      <div class="card p-5">
-        <div class="text-sm text-slate-400">3</div>
-        <div class="text-lg font-semibold mt-1">Rule-Based Ideas</div>
-        <p class="text-slate-300 text-sm mt-2">Momentum Long, Dip Short, and Reversal watchlists.</p>
+      <div class="card p-2 sm:p-5">
+        <div class="text-xs sm:text-sm text-slate-400">3</div>
+        <div class="text-xs sm:text-lg font-semibold mt-1">Rule-Based Ideas</div>
+        <p class="text-xs sm:text-base text-slate-300 mt-1">Momentum Long, Dip Short, and Reversal watchlists.</p>
       </div>
     </div>
-    <div class="mt-8 flex gap-2">
-      <a href="analytics.html" class="btn">Launch Analytics</a>
-      <a href="terms.html" class="btn-ghost">Terms of Use</a>
+    <div class="mt-3 sm:mt-4 flex flex-wrap gap-2">
+      <a href="analytics.html" class="btn text-xs sm:text-base px-3 py-2">Launch Analytics</a>
+      <a href="terms.html" class="btn-ghost text-xs sm:text-base px-3 py-2">Terms of Use</a>
     </div>
   </section>
 
-  <footer class="mt-10 mb-6 text-center text-xs text-slate-500">
+  <footer class="mt-6 mb-4 text-center text-xs text-slate-500">
     © <span id="year"></span> FhatalX · Snapshot • Trends • News • Suggestions
   </footer>
 

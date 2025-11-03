@@ -28,40 +28,40 @@
 </head>
 <body class="min-h-screen">
   <header class="sticky top-0 z-40 bg-slate-900/50 backdrop-blur border-b border-slate-800">
-    <div class="mx-auto max-w-5xl px-3 py-3 flex items-center gap-3">
+    <div class="mx-auto max-w-5xl px-3 sm:px-6 py-2 sm:py-3 flex flex-wrap items-center gap-2 sm:gap-3">
       <a href="index.html" class="flex items-center gap-2">
-        <img src="logo.png" alt="FhatalX" class="w-36 h-auto rounded-xl" />
+        <img src="logo.png" alt="FhatalX" class="w-24 sm:w-36 h-auto rounded-xl" />
       </a>
       <nav class="ml-auto flex items-center gap-2">
-        <a href="index.html" class="btn-ghost">Home</a>
-        <a href="analytics.html" class="btn-ghost">Analytics</a>
-        <a href="terms.html" class="btn-ghost">Terms</a>
+        <a href="index.html" class="btn-ghost text-xs sm:text-base">Home</a>
+        <a href="analytics.html" class="btn-ghost text-xs sm:text-base">Analytics</a>
+        <a href="terms.html" class="btn-ghost text-xs sm:text-base">Terms</a>
       </nav>
     </div>
   </header>
 
-  <main class="mx-auto max-w-5xl px-3 py-8">
-    <h1 class="text-3xl font-black">Terms of Use</h1>
-    <p class="mt-2 text-slate-300 text-sm">Last updated: <span id="date"></span></p>
+  <main class="mx-auto max-w-5xl px-3 sm:px-6 py-4 sm:py-6">
+    <h1 class="text-base sm:text-3xl font-black">Terms of Use</h1>
+    <p class="mt-1 text-slate-300 text-xs sm:text-sm">Last updated: <span id="date"></span></p>
 
-    <section class="card p-5 mt-5">
-      <h2>1. Overview</h2>
-      <p class="mt-2">
+    <section class="card p-2 sm:p-5 mt-3 sm:mt-5">
+      <h2 class="text-sm sm:text-xl font-bold">1. Overview</h2>
+      <p class="mt-1 text-xs sm:text-base">
         FhatalX is a crypto-market dashboard offering snapshot metrics, trend views, news aggregation, and rule-based heuristic signals. FhatalX does not provide investment advice or brokerage services.
       </p>
 
-      <h2>2. No Financial Advice</h2>
+      <h2 class="text-sm sm:text-xl font-bold">2. No Financial Advice</h2>
       <p class="mt-2">
         All information is provided solely for informational and educational purposes and should not be considered financial, investment, legal, accounting, or tax advice. You are responsible for your decisions and for complying with applicable laws and exchange rules.
       </p>
 
-      <h2>3. Market Data and Sources</h2>
+      <h2 class="text-sm sm:text-xl font-bold">3. Market Data and Sources</h2>
       <p class="mt-2">
         Quotes, metrics, and trend information are fetched live from third-party providers that may change, throttle, or restrict access. Data can be delayed, incomplete, or inaccurate.
       </p>
 
       <h3>3.1 Provider Attribution</h3>
-      <ul class="list-disc ml-6 mt-2 space-y-1">
+      <ul class="list-disc ml-3 sm:ml-6 mt-2 space-y-1">
         <li>Market snapshots and trending: public endpoints such as CoinGecko.</li>
         <li>Tradability filters: public Binance exchange info.</li>
         <li>News: RSS feeds converted to JSON via gateway services.</li>
@@ -70,40 +70,40 @@
         All trademarks, logos, and data remain property of their respective owners. No affiliation or endorsement is implied. Usage must comply with each provider’s terms and rate limits.
       </p>
 
-      <h2>4. Availability and Rate Limits</h2>
+      <h2 class="text-sm sm:text-xl font-bold">4. Availability and Rate Limits</h2>
       <p class="mt-2">
         APIs can fail or rate-limit. FhatalX may temporarily cache or reduce requests. Features can be modified, suspended, or removed without notice.
       </p>
 
-      <h2>5. Acceptable Use</h2>
+      <h2 class="text-sm sm:text-xl font-bold">5. Acceptable Use</h2>
       <ul class="list-disc ml-6 mt-2 space-y-1">
         <li>No scraping or re-distribution that violates provider policies.</li>
         <li>No circumvention of rate limits, authentication, or access controls.</li>
         <li>No attempts to use the site for unlawful activities.</li>
       </ul>
 
-      <h2>6. Liability</h2>
+      <h2 class="text-sm sm:text-xl font-bold">6. Liability</h2>
       <p class="mt-2">
         FhatalX is provided “as is” without warranties of any kind. To the maximum extent permitted by law, FhatalX will not be liable for any indirect, incidental, special, consequential, or exemplary damages, or for loss of profits, revenue, or data.
       </p>
 
-      <h2>7. Privacy</h2>
+      <h2 class="text-sm sm:text-xl font-bold">7. Privacy</h2>
       <p class="mt-2">
         FhatalX may use analytics or logs to improve stability and performance. Do not input sensitive personal data. See any separate privacy notice if provided.
       </p>
 
-      <h2>8. Changes</h2>
+      <h2 class="text-sm sm:text-xl font-bold">8. Changes</h2>
       <p class="mt-2">
         We may update these Terms at any time. Continued use after changes constitutes acceptance of the updated Terms.
       </p>
 
-      <h2>9. Contact</h2>
-      <p class="mt-2">
+      <h2 class="text-sm sm:text-xl font-bold">9. Contact</h2>
+      <p class="mt-1 text-xs sm:text-base">
         For questions about these Terms, contact us via the channels listed on our main site.
       </p>
     </section>
 
-    <footer class="mt-8 mb-6 text-center text-xs text-slate-500">
+    <footer class="mt-4 sm:mt-6 mb-3 sm:mb-4 text-center text-xs text-slate-500">
       © <span id="year"></span> FhatalX · Snapshot • Trends • News • Suggestions
     </footer>
   </main>
