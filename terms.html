@@ -1,303 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
   <title>FhatalX - Terms of Use</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-x-32.png">
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="color-scheme" content="dark light" />
-  <style>
-    :root{ --brand1:#6366f1; --brand2:#a855f7; }
-    .card{ @apply bg-slate-900/70 border border-slate-700 rounded-2xl shadow-xl; }
-    .btn-ghost{
-      display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
-      border-radius: 12px; padding: .625rem 1rem; font-size: .875rem; font-weight: 600; line-height: 1;
-      border: 1px solid #475569; color:#e2e8f0; text-decoration:none;
-      background: linear-gradient(180deg, rgba(148,163,184,.08), rgba(148,163,184,.02));
-      transition: background .2s ease, border-color .2s ease, transform .15s ease, box-shadow .2s ease;
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { dark: '#050b14', primary: '#6366f1', secondary: '#a855f7', accent: '#06b6d4' }
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
     }
-    .btn-ghost:hover{ border-color: var(--brand1); background: rgba(99,102,241,.08); transform: translateY(-1px); }
-    .btn-ghost:active{ transform: translateY(0); }
-    .btn-ghost:focus-visible{ outline:none; box-shadow: 0 0 0 3px rgba(109,94,247,.35); }
-    body{ background: radial-gradient(1200px 800px at 20% 10%,#0e1530 0%,#0b0f1a 55%,#06080f 100%); color:#e5e7eb; }
-    a.link{ color:#c7d2fe; text-decoration: underline; }
-    h2{ @apply text-xl font-bold mt-8; }
-    h3{ @apply text-lg font-semibold mt-6; }
-    p,li{ @apply text-slate-300; }
+  </script>
 
-    /* Cookie banner helper shadow */
-    .shadow-up { box-shadow: 0 -18px 60px rgba(0,0,0,.35); }
-  </style>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
 
-  <!-- NOTE: GA & AdSense are loaded via consent-controlled loader below. Do NOT add direct async tags here. -->
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="min-h-screen">
-  <header class="sticky top-0 z-40 bg-slate-900/50 backdrop-blur border-b border-slate-800">
-    <div class="mx-auto max-w-5xl px-3 sm:px-6 py-2 sm:py-3 flex flex-wrap items-center gap-2 sm:gap-3">
-      <a href="index.html" class="flex items-center gap-2">
-        <img src="logo.png" alt="FhatalX" class="w-24 sm:w-36 h-auto rounded-xl" />
-      </a>
-      <nav class="ml-auto flex items-center gap-2">
-        <a href="index.html" class="btn-ghost text-xs sm:text-base">Home</a>
-        <a href="analytics.html" class="btn-ghost text-xs sm:text-base">Analytics</a>
-        <a href="terms.html" class="btn-ghost text-xs sm:text-base">Terms</a>
-      </nav>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-50 glass border-b border-slate-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex-shrink-0 flex items-center gap-3">
+          <a href="index.html" class="flex items-center gap-2 group">
+            <img src="logo.png" alt="FhatalX"
+              class="h-10 w-auto rounded-lg transition-transform group-hover:scale-105" />
+          </a>
+        </div>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-8 items-center">
+          <a href="index.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Home</a>
+          <a href="analytics.html"
+            class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Analytics</a>
+          <a href="terms.html" class="text-sm font-medium text-white hover:text-indigo-400 transition-colors">Terms</a>
+          <a href="analytics.html" class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">Launch App</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center md:hidden">
+          <button id="mobile-menu-btn" type="button"
+            class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
+            aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="index.html"
+          class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Home</a>
+        <a href="analytics.html"
+          class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Analytics</a>
+        <a href="terms.html" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-slate-800">Terms</a>
+        <a href="analytics.html"
+          class="block px-3 py-2 rounded-md text-base font-medium text-indigo-400 font-semibold hover:bg-slate-800">Launch
+          App &rarr;</a>
+      </div>
     </div>
   </header>
 
-  <main class="mx-auto max-w-5xl px-3 sm:px-6 py-4 sm:py-6">
-    <h1 class="text-base sm:text-3xl font-black">Terms of Use</h1>
-    <p class="mt-1 text-slate-300 text-xs sm:text-sm">Last updated: <span id="date"></span></p>
+  <!-- Main Content -->
+  <main class="flex-grow pt-24 pb-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <section class="card p-2 sm:p-5 mt-3 sm:mt-5">
-      <h2 class="text-sm sm:text-xl font-bold">1. Overview</h2>
-      <p class="mt-1 text-xs sm:text-base">
-        FhatalX is a crypto-market dashboard offering snapshot metrics, trend views, news aggregation, and rule-based heuristic signals. FhatalX does not provide investment advice or brokerage services.
-      </p>
+      <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-white mb-2">Terms of Use</h1>
+        <p class="text-slate-400 text-sm">Last updated: <span id="date">January 2026</span></p>
+      </div>
 
-      <h2 class="text-sm sm:text-xl font-bold">2. No Financial Advice</h2>
-      <p class="mt-2">
-        All information is provided solely for informational and educational purposes and should not be considered financial, investment, legal, accounting, or tax advice. You are responsible for your decisions and for complying with applicable laws and exchange rules.
-      </p>
+      <div class="space-y-6 text-slate-300 text-sm leading-relaxed">
+        <section class="glass-card p-6 rounded-xl">
+          <h2 class="text-lg font-bold text-white mb-3">1. Overview</h2>
+          <p>FhatalX is a crypto-market dashboard offering snapshot metrics, trend views, news aggregation, and
+            rule-based heuristic signals. FhatalX does not provide investment advice or brokerage services.</p>
+        </section>
 
-      <h2 class="text-sm sm:text-xl font-bold">3. Market Data and Sources</h2>
-      <p class="mt-2">
-        Quotes, metrics, and trend information are fetched live from third-party providers that may change, throttle, or restrict access. Data can be delayed, incomplete, or inaccurate.
-      </p>
+        <section class="glass-card p-6 rounded-xl">
+          <h2 class="text-lg font-bold text-white mb-3">2. No Financial Advice</h2>
+          <p>All information is provided solely for informational and educational purposes and should not be considered
+            financial, investment, legal, accounting, or tax advice. You are responsible for your decisions and for
+            complying with applicable laws and exchange rules.</p>
+        </section>
 
-      <h3>3.1 Provider Attribution</h3>
-      <ul class="list-disc ml-3 sm:ml-6 mt-2 space-y-1">
-        <li>Market snapshots and trending: public endpoints such as CoinGecko.</li>
-        <li>Tradability filters: public Binance exchange info.</li>
-        <li>News: RSS feeds converted to JSON via gateway services.</li>
-      </ul>
-      <p class="mt-2 text-sm text-slate-400">
-        All trademarks, logos, and data remain property of their respective owners. No affiliation or endorsement is implied. Usage must comply with each provider’s terms and rate limits.
-      </p>
+        <section class="glass-card p-6 rounded-xl">
+          <h2 class="text-lg font-bold text-white mb-3">3. Market Data and Sources</h2>
+          <p>Quotes, metrics, and trend information are fetched live from third-party providers that may change,
+            throttle, or restrict access. Data can be delayed, incomplete, or inaccurate.</p>
+          <ul class="list-disc ml-5 mt-3 space-y-1 text-slate-400">
+            <li>Market snapshots and trending: public endpoints such as CoinGecko.</li>
+            <li>Tradability filters: public Binance exchange info.</li>
+            <li>News: RSS feeds converted to JSON via gateway services.</li>
+          </ul>
+        </section>
 
-      <h2 class="text-sm sm:text-xl font-bold">4. Availability and Rate Limits</h2>
-      <p class="mt-2">
-        APIs can fail or rate-limit. FhatalX may temporarily cache or reduce requests. Features can be modified, suspended, or removed without notice.
-      </p>
+        <section class="glass-card p-6 rounded-xl">
+          <h2 class="text-lg font-bold text-white mb-3">4. Cookies & Privacy</h2>
+          <p class="mb-2">We use essential cookies for security and functionality. With your consent, we may use
+            analytics tools (like Google Analytics) to improve the service.</p>
+          <p>We do not show personalized ads or sell your data. You can manage your preferences below.</p>
+          <button id="link-manage-cookies" class="mt-4 btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Manage
+            Cookie Preferences</button>
+        </section>
+      </div>
 
-      <h2 class="text-sm sm:text-xl font-bold">5. Acceptable Use</h2>
-      <ul class="list-disc ml-6 mt-2 space-y-1">
-        <li>No scraping or re-distribution that violates provider policies.</li>
-        <li>No circumvention of rate limits, authentication, or access controls.</li>
-        <li>No attempts to use the site for unlawful activities.</li>
-      </ul>
-
-      <h2 class="text-sm sm:text-xl font-bold">6. Liability</h2>
-      <p class="mt-2">
-        FhatalX is provided “as is” without warranties of any kind. To the maximum extent permitted by law, FhatalX will not be liable for any indirect, incidental, special, consequential, or exemplary damages, or for loss of profits, revenue, or data.
-      </p>
-
-      <h2 class="text-sm sm:text-xl font-bold">7. Privacy</h2>
-      <p class="mt-2">
-        FhatalX may use analytics or logs to improve stability and performance. Do not input sensitive personal data. See any separate privacy notice if provided.
-      </p>
-
-      <h2 class="text-sm sm:text-xl font-bold">8. Cookies & Consent</h2>
-      <p class="mt-2">
-        We use essential cookies for security and functionality. With your consent, we may use analytics (Google Analytics) and ads/marketing (Google AdSense). You can review or change your choices at any time via the “Manage cookies” link in the footer.
-        <br><em>Sivuston toiminnan ja turvallisuuden kannalta välttämättömät evästeet</em> are always on.
-      </p>
-
-      <h2 class="text-sm sm:text-xl font-bold">9. Changes</h2>
-      <p class="mt-2">
-        We may update these Terms at any time. Continued use after changes constitutes acceptance of the updated Terms.
-      </p>
-
-      <h2 class="text-sm sm:text-xl font-bold">10. Contact</h2>
-      <p class="mt-1 text-xs sm:text-base">
-        For questions about these Terms, contact us via the channels listed on our main site.
-      </p>
-    </section>
-
-    <footer class="mt-4 sm:mt-6 mb-3 sm:mb-4 text-center text-xs text-slate-500">
-      © <span id="year"></span> FhatalX · Snapshot • Trends • News • Suggestions
-      · <button id="footerManageCookies" class="btn-ghost ml-1">Manage cookies</button>
-    </footer>
+    </div>
   </main>
 
-  <!-- Cookie Banner (first layer) -->
-  <div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 shadow-up hidden">
-    <div class="mx-auto max-w-5xl m-2 sm:m-4 p-3 sm:p-4 rounded-xl bg-slate-800/50 backdrop-blur border border-slate-700">
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
-        <div class="text-sm">
-          <div class="font-semibold">We use cookies for essential features, analytics, and ads.</div>
-          <div class="text-slate-400 text-xs mt-1">
-            <em>Sivuston toiminnan ja turvallisuuden kannalta välttämättömät evästeet</em> are always on. Choose the rest below.
-          </div>
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/50 bg-slate-900/50 mt-auto">
+    <div
+      class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-slate-400 text-sm order-2 md:order-1">
+        &copy; <span id="year">2026</span> Fhatal Studios. All rights reserved.
+      </div>
+      <div class="flex space-x-6 order-1 md:order-2">
+        <a href="terms.html" class="text-slate-400 hover:text-white transition-colors text-sm">
+          Terms of Service
+        </a>
+        <a href="mailto:support@fhatal.com" class="text-slate-400 hover:text-white transition-colors text-sm">
+          Contact
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cookie Logic (Injected by main.js) -->
+
+  <!-- Cookie Banner (Bottom Bar) -->
+  <div id="cookie-banner"
+    class="fixed bottom-0 left-0 right-0 z-[100] transform translate-y-full transition-transform duration-300">
+    <div class="max-w-7xl mx-auto p-4">
+      <div
+        class="glass-card p-4 sm:p-5 rounded-xl border-t border-indigo-500/30 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-sm text-slate-300 flex-1">
+          <p class="font-semibold text-white mb-1">We value your privacy</p>
+          <p>We use cookies to enhance your experience and analyze traffic. Essential cookies are always on.</p>
         </div>
-        <div class="flex gap-2 sm:ml-auto">
-          <button id="cb-reject" class="btn-ghost text-xs">Reject non-essential</button>
-          <button id="cb-customize" class="btn-ghost text-xs">Customize</button>
-          <button id="cb-accept" class="btn text-xs" style="background: linear-gradient(135deg,var(--brand1),var(--brand2)); color:#fff; border-color: transparent; border-radius: 12px;">Accept all</button>
+        <div class="flex gap-3 shrink-0">
+          <button id="btn-reject-all" class="btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Reject
+            Optional</button>
+          <button id="btn-customize" class="btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Customize</button>
+          <button id="btn-accept-all" class="btn-primary px-4 py-2 rounded-lg text-xs font-semibold">Accept All</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Preferences Modal (second layer) -->
-  <div id="cookieModal" class="hidden fixed inset-0 z-50">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-    <div class="relative mx-auto mt-20 max-w-lg w-[92%]">
-      <div class="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-4 sm:p-5">
-        <h3 class="text-lg font-semibold">Cookie Preferences</h3>
-        <p class="text-slate-400 text-sm mt-1">Select what you want to allow. Necessary cookies are always on.</p>
-
-        <div class="mt-3 space-y-3">
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Necessary</div>
-              <div class="text-xs text-slate-400">Security, load balancing, consent storage.</div>
-            </div>
-            <input type="checkbox" checked disabled class="w-10 h-6 rounded-full appearance-none bg-slate-600">
+  <!-- Cookie Preferences Modal -->
+  <div id="cookie-preferences-modal"
+    class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden glass-card">
+      <div class="p-6 border-b border-slate-700">
+        <h3 class="text-xl font-bold text-white">Cookie Preferences</h3>
+        <p class="text-slate-400 text-sm mt-1">Manage your consent settings.</p>
+      </div>
+      <div class="p-6 space-y-4">
+        <!-- Necessary -->
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="text-base font-semibold text-white">Necessary</h4>
+            <p class="text-xs text-slate-400 max-w-[250px]">Required for the site to function (security, session).</p>
           </div>
-
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Analytics</div>
-              <div class="text-xs text-slate-400">Anonymous/aggregated usage measurement.</div>
-            </div>
-            <input id="consent-analytics" type="checkbox" class="w-10 h-6 rounded-full appearance-none bg-slate-700 checked:bg-indigo-600">
-          </div>
-
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Ads/Marketing</div>
-              <div class="text-xs text-slate-400">Ad delivery and measurement.</div>
-            </div>
-            <input id="consent-ads" type="checkbox" class="w-10 h-6 rounded-full appearance-none bg-slate-700 checked:bg-indigo-600">
+          <div>
+            <input type="checkbox" checked disabled
+              class="w-5 h-5 rounded border-slate-600 bg-indigo-500 text-indigo-500 focus:ring-indigo-500 opacity-50 cursor-not-allowed">
           </div>
         </div>
-
-        <div class="mt-4 flex justify-end gap-2">
-          <button id="modal-reject" class="btn-ghost text-xs">Reject non-essential</button>
-          <button id="modal-save" class="btn-ghost text-xs">Save choices</button>
-          <button id="modal-accept" class="btn text-xs" style="background: linear-gradient(135deg,var(--brand1),var(--brand2)); color:#fff; border-color: transparent; border-radius: 12px;">Accept all</button>
+        <!-- Analytics -->
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="text-base font-semibold text-white">Analytics</h4>
+            <p class="text-xs text-slate-400 max-w-[250px]">Help us improve by understanding how you use the site.</p>
+          </div>
+          <div>
+            <input type="checkbox" id="chk-analytics" name="consent-type" value="analytics"
+              class="w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500">
+          </div>
         </div>
+      </div>
+      <div class="p-4 bg-black/20 flex justify-end gap-3">
+        <button id="btn-close-modal" class="btn-ghost px-4 py-2 rounded-lg text-sm">Cancel</button>
+        <button id="btn-save-preferences" class="btn-primary px-4 py-2 rounded-lg text-sm">Save Preferences</button>
       </div>
     </div>
   </div>
 
-  <!-- Consent Manager (GDPR/ePrivacy, Consent Mode v2) -->
+  <!-- Init -->
   <script>
-  (function(){
-    const KEY='fhatalx_cookie_consent_v2';
-    const $=id=>document.getElementById(id);
-
-    const banner=$('cookieBanner');
-    const modal=$('cookieModal');
-    const aChk=$('consent-analytics');
-    const mChk=$('consent-ads');
-
-    function getConsent(){ try{return JSON.parse(localStorage.getItem(KEY))||null;}catch(e){return null;} }
-    function setConsent(obj){ localStorage.setItem(KEY, JSON.stringify({...obj, ts:new Date().toISOString(), v:2})); }
-    function showBanner(){ banner?.classList.remove('hidden'); }
-    function hideBanner(){ banner?.classList.add('hidden'); }
-    function openModal(){ modal?.classList.remove('hidden'); }
-    function closeModal(){ modal?.classList.add('hidden'); }
-
-    // Run <script type="text/plain" data-consent="..."> once category allowed
-    function runDeferredScripts(consent){
-      const allowed=new Set(['necessary']);
-      if(consent.analytics) allowed.add('analytics');
-      if(consent.ads) allowed.add('ads');
-      document.querySelectorAll('script[type="text/plain"][data-consent]').forEach(tag=>{
-        if(!allowed.has(tag.getAttribute('data-consent'))) return;
-        const s=document.createElement('script');
-        for(const {name,value} of Array.from(tag.attributes)){
-          if(name==='type'||name==='data-consent') continue;
-          s.setAttribute(name,value);
-        }
-        s.text=tag.text; tag.parentNode.replaceChild(s,tag);
-      });
-    }
-
-    const saved=getConsent();
-    if(!saved){ showBanner(); } else { runDeferredScripts(saved); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(saved); }
-
-    // Banner actions
-    $('cb-reject')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:false,ads:false}; setConsent(c); hideBanner(); closeModal(); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('cb-accept')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:true,ads:true}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('cb-customize')?.addEventListener('click', ()=>{ const c=getConsent()||{necessary:true,analytics:false,ads:false}; if(aChk) aChk.checked=!!c.analytics; if(mChk) mChk.checked=!!c.ads; openModal(); });
-
-    // Modal actions
-    $('modal-reject')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:false,ads:false}; setConsent(c); hideBanner(); closeModal(); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('modal-accept')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:true,ads:true}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('modal-save')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:!!aChk?.checked,ads:!!mChk?.checked}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-
-    // Footer manage
-    $('footerManageCookies')?.addEventListener('click', ()=>{ const c=getConsent()||{necessary:true,analytics:false,ads:false}; if(aChk) aChk.checked=!!c.analytics; if(mChk) mChk.checked=!!c.ads; openModal(); });
-  })();
+    lucide.createIcons();
   </script>
-
-  <!-- GA4 + AdSense loader (Consent Mode v2) -->
+  <script src="assets/js/main.js"></script>
   <script>
-  (function(){
-    const GA_ID = 'G-J7V1YMQ77C';
-    const ADS_CLIENT = 'ca-pub-2697517525197581';
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-
-    // Exposed hook used by the consent manager above
-    window.__fhatalxLoadGtag = function(consent){
-      if (window.__gtagLoaded) {
-        // Update consent only
-        gtag('consent', 'update', {
-          ad_storage: consent.ads ? 'granted' : 'denied',
-          ad_user_data: consent.ads ? 'granted' : 'denied',
-          ad_personalization: consent.ads ? 'granted' : 'denied',
-          analytics_storage: consent.analytics ? 'granted' : 'denied',
-          functionality_storage: 'granted',
-          security_storage: 'granted'
-        });
-        return;
-      }
-
-      // Load GA
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
-      document.head.appendChild(s);
-
-      window.__gtagLoaded = true;
-      gtag('js', new Date());
-
-      // Default consent according to user's choice
-      gtag('consent', 'default', {
-        ad_storage: consent.ads ? 'granted' : 'denied',
-        ad_user_data: consent.ads ? 'granted' : 'denied',
-        ad_personalization: consent.ads ? 'granted' : 'denied',
-        analytics_storage: consent.analytics ? 'granted' : 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted'
-      });
-
-      gtag('config', GA_ID, { anonymize_ip: true });
-
-      // Load AdSense only if ads are allowed (no slots on this page, but safe to load)
-      if (consent.ads) {
-        const s2 = document.createElement('script');
-        s2.async = true;
-        s2.crossOrigin = 'anonymous';
-        s2.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ADS_CLIENT);
-        s2.setAttribute('data-ad-client', ADS_CLIENT);
-        document.head.appendChild(s2);
-      }
-    };
-  })();
-  </script>
-
-  <script>
-    const d=new Date(); 
-    document.getElementById('year').textContent = d.getFullYear();
-    document.getElementById('date').textContent = d.toLocaleDateString();
+    document.getElementById('date').textContent = new Date().toLocaleDateString();
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
+
 </html>

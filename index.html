@@ -1,401 +1,391 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
-  <meta charset="utf-8" />
-  <title>FhatalX - Home | Snapshot • Trends • News • Suggestions</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-x-32.png">
-  <meta name="color-scheme" content="dark light" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <title>FhatalX - Intelligent Crypto Signals & Analytics</title>
+    <meta name="description"
+        content="Quant-driven crypto dashboard. Real-time snapshots, trends, and rule-based trading signals." />
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-x-32.png">
 
-  <style>
-    :root{
-      --bg:#0b0f1a; --panel:#0f172a; --glass:#0b1222cc;
-      --ring: rgba(109,94,247,.35);
-      --brand1:#6366f1; --brand2:#a855f7; --brand3:#22d3ee;
-      --text:#e5e7eb; --muted:#94a3b8; --line:#1f2a44;
-    }
-    body{ background: radial-gradient(1200px 800px at 20% 10%,#0e1530 0%,#0b0f1a 55%,#06080f 100%); color: var(--text); overflow-x: hidden; }
-    * { box-sizing: border-box; }
-
-    .card{ background: rgba(15,23,42,.7); border: 1px solid #334155; border-radius: 1rem; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
-    .glass{ background: var(--glass); backdrop-filter: blur(10px); }
-    .btn{
-      display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
-      border-radius: 12px; padding: .625rem 1rem; font-size: .875rem; font-weight: 600; line-height: 1;
-      border: 1px solid rgba(148,163,184,.25);
-      background: linear-gradient(135deg,var(--brand1),var(--brand2));
-      color: #fff; text-decoration: none;
-      box-shadow: 0 12px 28px -12px rgba(99,102,241,.6), inset 0 -1px 0 rgba(255,255,255,.06);
-      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease, background .2s ease, border-color .2s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); box-shadow: 0 16px 36px -14px rgba(99,102,241,.65); }
-    .btn:active{ transform: translateY(0); filter: brightness(.98); }
-    .btn:focus-visible{ outline: none; box-shadow: 0 0 0 3px var(--ring), 0 16px 36px -14px rgba(99,102,241,.65); }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; filter:none; }
-
-    .btn-ghost{
-      display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
-      border-radius: 12px; padding: .625rem 1rem; font-size: .875rem; font-weight: 600; line-height: 1;
-      border: 1px solid #475569; color:#e2e8f0; text-decoration:none;
-      background: linear-gradient(180deg, rgba(148,163,184,.08), rgba(148,163,184,.02));
-      transition: background .2s ease, border-color .2s ease, transform .15s ease, box-shadow .2s ease;
-    }
-    .btn-ghost:hover{ border-color: var(--brand1); background: rgba(99,102,241,.08); transform: translateY(-1px); }
-    .btn-ghost:active{ transform: translateY(0); }
-    .btn-ghost:focus-visible{ outline:none; box-shadow: 0 0 0 3px var(--ring); }
-
-    .scene{ perspective: 1000px; } .layer{ transform-style: preserve-3d; transition: transform .2s ease; }
-    .glow{ box-shadow: 0 0 60px 10px rgba(99,102,241,.25), inset 0 0 30px rgba(168,85,247,.12); }
-    .grad-ring{ position:absolute; inset:-2px; border-radius:24px; z-index:-1; background: conic-gradient(from 0deg,var(--brand1),var(--brand2),var(--brand3),var(--brand1)); filter: blur(22px); opacity:.35; }
-    .floating{ animation: float 6s ease-in-out infinite; }
-    @keyframes float{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-10px) } }
-    .ticker{ mask-image: linear-gradient(90deg,transparent,black 10%,black 90%,transparent); }
-    .ticker-track{ animation: marquee 24s linear infinite; }
-    @keyframes marquee{ 0%{ transform: translateX(0) } 100%{ transform: translateX(-50%) } }
-
-    /* Cookie banner/modal helpers */
-    .shadow-up { box-shadow: 0 -18px 60px rgba(0,0,0,.35); }
-  </style>
-</head>
-<body class="min-h-screen">
-  <!-- Header -->
-  <header class="sticky top-0 z-40 glass border-b border-slate-800">
-    <div class="mx-auto max-w-5xl px-2 sm:px-6 py-2 sm:py-3 flex items-center gap-1 sm:gap-3">
-      <a href="index.html" class="flex items-center gap-1">
-        <img src="logo.png" alt="FhatalX" class="w-16 sm:w-36 h-auto rounded-xl" />
-      </a>
-      <nav class="ml-auto flex items-center gap-1 sm:gap-2 flex-wrap">
-        <a href="index.html" class="btn-ghost text-xs sm:text-base px-2 py-2 sm:px-4">Home</a>
-        <a href="analytics.html" class="btn-ghost text-xs sm:text-base px-2 py-2 sm:px-4">Analytics</a>
-        <a href="terms.html" class="btn-ghost text-xs sm:text-base px-2 py-2 sm:px-4">Terms</a>
-        <a href="#get-started" class="btn text-xs sm:text-base px-2 py-2 sm:px-4 whitespace-nowrap">Get Started</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="mx-auto max-w-5xl px-2 sm:px-6 pt-3 sm:pt-12">
-    <div class="space-y-4 sm:space-y-6">
-      <div>
-        <h1 class="text-sm sm:text-3xl font-black leading-tight">
-          FhatalX - <span class="text-indigo-400">Snapshot</span>, Trends, News, <span class="text-cyan-300">Suggestions</span>
-        </h1>
-        <p class="mt-2 text-xs sm:text-base text-slate-300">
-          A quant-driven crypto dashboard with rule-based signals. Built for speed, clarity, and live market awareness.
-        </p>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <a href="analytics.html" class="btn text-xs sm:text-base px-3 py-2">Open Analytics</a>
-          <a href="terms.html" class="btn-ghost text-xs sm:text-base px-3 py-2">Read Terms</a>
-        </div>
-        <div class="mt-3 grid grid-cols-3 gap-1.5 sm:gap-3">
-          <div class="card p-1.5 sm:p-4 text-center">
-            <div class="text-xs text-slate-400">Assets</div>
-            <div id="kpi-assets" class="text-sm sm:text-2xl font-bold">—</div>
-          </div>
-          <div class="card p-1.5 sm:p-4 text-center">
-            <div class="text-xs text-slate-400">Signals</div>
-            <div id="kpi-sigs" class="text-sm sm:text-2xl font-bold">—</div>
-          </div>
-          <div class="card p-1.5 sm:p-4 text-center">
-            <div class="text-xs text-slate-400">Feeds</div>
-            <div id="kpi-feeds" class="text-sm sm:text-2xl font-bold">—</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="scene">
-        <div id="tilt" class="layer relative rounded-xl sm:rounded-2xl p-2 sm:p-6 bg-slate-900/60 border border-slate-700 glow">
-          <div class="grad-ring"></div>
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2">
-            <div class="text-slate-300">
-              <div class="text-xs">Demo</div>
-              <div class="text-xs sm:text-xl font-semibold">Momentum, Dip, Reversal</div>
-            </div>
-            <div class="rounded-lg px-2 py-0.5 text-xs border border-slate-600 whitespace-nowrap">Live Preview</div>
-          </div>
-          <div class="mt-2 sm:mt-3 grid grid-cols-3 gap-1.5 sm:gap-2">
-            <div class="rounded-lg sm:rounded-xl p-1.5 sm:p-4 border border-slate-700 bg-slate-800/50 floating">
-              <div class="text-xs text-slate-400">Momentum</div>
-              <div class="text-xs sm:text-lg font-semibold text-emerald-300">↗ Long</div>
-            </div>
-            <div class="rounded-lg sm:rounded-xl p-1.5 sm:p-4 border border-slate-700 bg-slate-800/50 floating" style="animation-delay:.5s">
-              <div class="text-xs text-slate-400">Dip</div>
-              <div class="text-xs sm:text-lg font-semibold text-rose-300">↘ Short</div>
-            </div>
-            <div class="rounded-lg sm:rounded-xl p-1.5 sm:p-4 border border-slate-700 bg-slate-800/50 floating" style="animation-delay:1s">
-              <div class="text-xs text-slate-400">Reversal</div>
-              <div class="text-xs sm:text-lg font-semibold text-indigo-300">— Watch</div>
-            </div>
-          </div>
-          <div class="mt-3 sm:mt-6">
-            <div class="text-xs text-slate-400 mb-1">Sample Ticker</div>
-            <div class="relative overflow-hidden rounded-lg sm:rounded-xl border border-slate-700 bg-slate-800/60 ticker">
-              <div class="whitespace-nowrap flex ticker-track text-xs">
-                <div class="px-4 py-2">BTC +1.2%</div>
-                <div class="px-4 py-2">ETH +0.8%</div>
-                <div class="px-4 py-2">SOL -2.1%</div>
-                <div class="px-4 py-2">XRP +0.3%</div>
-                <div class="px-4 py-2">ARB -1.0%</div>
-                <div class="px-4 py-2">ADA +0.5%</div>
-                <div class="px-4 py-2">AVAX +1.1%</div>
-                <div class="px-4 py-2">DOGE -0.4%</div>
-                <!-- duplicate to loop seamlessly -->
-                <div class="px-4 py-2">BTC +1.2%</div>
-                <div class="px-4 py-2">ETH +0.8%</div>
-                <div class="px-4 py-2">SOL -2.1%</div>
-                <div class="px-4 py-2">XRP +0.3%</div>
-                <div class="px-4 py-2">ARB -1.0%</div>
-                <div class="px-4 py-2">ADA +0.5%</div>
-                <div class="px-4 py-2">AVAX +1.1%</div>
-                <div class="px-4 py-2">DOGE -0.4%</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- /scene -->
-    </div>
-  </section>
-
-  <!-- Why -->
-  <section id="get-started" class="mx-auto max-w-5xl px-2 sm:px-6 py-4 sm:py-8">
-    <h2 class="text-sm sm:text-2xl font-bold">Why FhatalX</h2>
-    <p class="text-xs sm:text-base text-slate-300 mt-1">Opinionated heuristics, fast UI, and pragmatic signals.</p>
-    <div class="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
-      <div class="card p-2 sm:p-5">
-        <div class="text-xs sm:text-sm text-slate-400">1</div>
-        <div class="text-xs sm:text-lg font-semibold mt-1">Snapshot & Movers</div>
-        <p class="text-xs sm:text-base text-slate-300 mt-1">Market cap, volume, BTC dominance, and daily leaders/laggards.</p>
-      </div>
-      <div class="card p-2 sm:p-5">
-        <div class="text-xs sm:text-sm text-slate-400">2</div>
-        <div class="text-xs sm:text-lg font-semibold mt-1">Trending & News</div>
-        <p class="text-xs sm:text-base text-slate-300 mt-1">CoinGecko trending list plus curated crypto headlines.</p>
-      </div>
-      <div class="card p-2 sm:p-5">
-        <div class="text-xs sm:text-sm text-slate-400">3</div>
-        <div class="text-xs sm:text-lg font-semibold mt-1">Rule-Based Ideas</div>
-        <p class="text-xs sm:text-base text-slate-300 mt-1">Momentum Long, Dip Short, and Reversal watchlists.</p>
-      </div>
-    </div>
-    <div class="mt-3 sm:mt-4 flex flex-wrap gap-2">
-      <a href="analytics.html" class="btn text-xs sm:text-base px-3 py-2">Launch Analytics</a>
-      <a href="terms.html" class="btn-ghost text-xs sm:text-base px-3 py-2">Terms of Use</a>
-    </div>
-  </section>
-
-  <footer class="mt-6 mb-4 text-center text-xs text-slate-500">
-    © <span id="year"></span> FhatalX · Snapshot • Trends • News • Suggestions
-    · <button id="footerManageCookies" class="btn-ghost ml-1">Manage cookies</button>
-  </footer>
-
-  <!-- ===== Cookie Banner (first layer) ===== -->
-  <div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 shadow-up">
-    <div class="mx-auto max-w-5xl m-2 sm:m-4 p-3 sm:p-4 rounded-xl glass border border-slate-700">
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
-        <div class="text-sm">
-          <div class="font-semibold">We use cookies for essential features, analytics, and ads.</div>
-          <div class="text-slate-400 text-xs mt-1">
-            <em>Sivuston toiminnan ja turvallisuuden kannalta välttämättömät evästeet</em> are always on. Choose the rest below.
-          </div>
-        </div>
-        <div class="flex gap-2 sm:ml-auto">
-          <button id="cb-reject" class="btn-ghost text-xs">Reject non-essential</button>
-          <button id="cb-customize" class="btn-ghost text-xs">Customize</button>
-          <button id="cb-accept" class="btn text-xs">Accept all</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== Preferences Modal (second layer) ===== -->
-  <div id="cookieModal" class="hidden fixed inset-0 z-50">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-    <div class="relative mx-auto mt-20 max-w-lg w-[92%]">
-      <div class="glass border border-slate-700 rounded-2xl p-4 sm:p-5">
-        <h3 class="text-lg font-semibold">Cookie Preferences</h3>
-        <p class="text-slate-400 text-sm mt-1">Select what you want to allow. Necessary cookies are always on.</p>
-
-        <div class="mt-3 space-y-3">
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Necessary</div>
-              <div class="text-xs text-slate-400">Security, load balancing, consent storage.</div>
-            </div>
-            <input type="checkbox" checked disabled class="w-10 h-6 rounded-full appearance-none bg-slate-600">
-          </div>
-
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Analytics</div>
-              <div class="text-xs text-slate-400">Anonymous/aggregated usage measurement.</div>
-            </div>
-            <input id="consent-analytics" type="checkbox" class="w-10 h-6 rounded-full appearance-none bg-slate-700 checked:bg-indigo-600">
-          </div>
-
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Ads/Marketing</div>
-              <div class="text-xs text-slate-400">Ad delivery and measurement.</div>
-            </div>
-            <input id="consent-ads" type="checkbox" class="w-10 h-6 rounded-full appearance-none bg-slate-700 checked:bg-indigo-600">
-          </div>
-        </div>
-
-        <div class="mt-4 flex justify-end gap-2">
-          <button id="modal-reject" class="btn-ghost text-xs">Reject non-essential</button>
-          <button id="modal-save" class="btn-ghost text-xs">Save choices</button>
-          <button id="modal-accept" class="btn text-xs">Accept all</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    /* ---------- Simple UI scripts ---------- */
-    const ease = t => 1 - Math.pow(1 - t, 3);
-    function countUp(el, target, dur=900){
-      const start=performance.now();
-      const step=(now)=>{
-        const p=Math.min(1,(now-start)/dur);
-        el.textContent = Math.floor(ease(p)*target).toLocaleString();
-        if(p<1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    }
-    document.addEventListener('DOMContentLoaded', ()=>{
-      document.getElementById('year').textContent = new Date().getFullYear();
-      countUp(document.getElementById('kpi-assets'), 200);
-      countUp(document.getElementById('kpi-sigs'), 36);
-      countUp(document.getElementById('kpi-feeds'), 3);
-
-      // tilt
-      const box = document.getElementById('tilt');
-      let b = box.getBoundingClientRect();
-      function tilt(e){
-        const x=(e.clientX - (b.left + b.width/2))/b.width;
-        const y=(e.clientY - (b.top + b.height/2))/b.height;
-        box.style.transform = `rotateX(${(-y*8).toFixed(2)}deg) rotateY(${(x*10).toFixed(2)}deg) translateZ(0)`;
-      }
-      function reset(){ box.style.transform='rotateX(0) rotateY(0)'; }
-      box.addEventListener('mousemove',tilt);
-      box.addEventListener('mouseleave',reset);
-      window.addEventListener('resize',()=>{ b = box.getBoundingClientRect(); });
-    });
-  </script>
-
-  <!-- ---------- Consent Manager (GDPR/ePrivacy, Consent Mode v2) ---------- -->
-  <script>
-  (function(){
-    const KEY='fhatalx_cookie_consent_v2';
-    const $=id=>document.getElementById(id);
-
-    const banner=$('cookieBanner');
-    const modal=$('cookieModal');
-    const aChk=$('consent-analytics');
-    const mChk=$('consent-ads');
-
-    function getConsent(){ try{return JSON.parse(localStorage.getItem(KEY))||null;}catch(e){return null;} }
-    function setConsent(obj){ localStorage.setItem(KEY, JSON.stringify({...obj, ts:new Date().toISOString(), v:2})); }
-    function showBanner(){ banner?.classList.remove('hidden'); }
-    function hideBanner(){ banner?.classList.add('hidden'); }
-    function openModal(){ modal?.classList.remove('hidden'); }
-    function closeModal(){ modal?.classList.add('hidden'); }
-
-    // Optional: run deferred <script type="text/plain" data-consent="...">
-    function runDeferredScripts(consent){
-      const allowed=new Set(['necessary']);
-      if(consent.analytics) allowed.add('analytics');
-      if(consent.ads) allowed.add('ads');
-      document.querySelectorAll('script[type="text/plain"][data-consent]').forEach(tag=>{
-        if(!allowed.has(tag.getAttribute('data-consent'))) return;
-        const s=document.createElement('script');
-        for(const {name,value} of Array.from(tag.attributes)){
-          if(name==='type'||name==='data-consent') continue;
-          s.setAttribute(name,value);
+    <!-- Tailwind CDN (Utility Engine) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#050b14',
+                            primary: '#6366f1',
+                            secondary: '#a855f7',
+                            accent: '#06b6d4'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
         }
-        s.text=tag.text; tag.parentNode.replaceChild(s,tag);
-      });
-    }
+    </script>
 
-    const saved=getConsent();
-    if(!saved){ showBanner(); } else { runDeferredScripts(saved); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(saved); }
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
 
-    // Banner buttons
-    $('cb-reject')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:false,ads:false}; setConsent(c); hideBanner(); closeModal(); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('cb-accept')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:true,ads:true}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('cb-customize')?.addEventListener('click', ()=>{ const c=getConsent()||{necessary:true,analytics:false,ads:false}; if(aChk) aChk.checked=!!c.analytics; if(mChk) mChk.checked=!!c.ads; openModal(); });
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
 
-    // Modal buttons
-    $('modal-reject')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:false,ads:false}; setConsent(c); hideBanner(); closeModal(); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('modal-accept')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:true,ads:true}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('modal-save')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:!!aChk?.checked,ads:!!mChk?.checked}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
+<body class="antialiased min-h-screen flex flex-col">
 
-    // Footer manage
-    $('footerManageCookies')?.addEventListener('click', ()=>{ const c=getConsent()||{necessary:true,analytics:false,ads:false}; if(aChk) aChk.checked=!!c.analytics; if(mChk) mChk.checked=!!c.ads; openModal(); });
-  })();
-  </script>
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 glass border-b border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <img src="logo.png" alt="FhatalX"
+                            class="h-10 w-auto rounded-lg transition-transform group-hover:scale-105" />
+                    </a>
+                </div>
 
-  <!-- ---------- GA4 + AdSense loader (Consent Mode v2) ---------- -->
-  <script>
-  (function(){
-    const GA_ID = 'G-J7V1YMQ77C';                 // your GA4 ID
-    const ADS_CLIENT = 'ca-pub-2697517525197581'; // your AdSense client
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html"
+                        class="text-sm font-medium text-white hover:text-indigo-400 transition-colors">Home</a>
+                    <a href="analytics.html"
+                        class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Analytics</a>
+                    <a href="terms.html"
+                        class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Terms</a>
+                    <a href="analytics.html" class="btn-primary px-5 py-2 rounded-lg text-sm font-semibold">Launch
+                        App</a>
+                </nav>
 
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    window.__fhatalxLoadGtag = function(consent){
-      // If already loaded, just update consent
-      if (window.__gtagLoaded) {
-        gtag('consent', 'update', {
-          ad_storage: consent.ads ? 'granted' : 'denied',
-          ad_user_data: consent.ads ? 'granted' : 'denied',
-          ad_personalization: consent.ads ? 'granted' : 'denied',
-          analytics_storage: consent.analytics ? 'granted' : 'denied',
-          functionality_storage: 'granted',
-          security_storage: 'granted'
-        });
-        return;
-      }
+        <!-- Mobile Menu -->
+        <div class="md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-white bg-slate-800">Home</a>
+                <a href="analytics.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Analytics</a>
+                <a href="terms.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-800">Terms</a>
+                <a href="analytics.html"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-indigo-400 font-semibold hover:bg-slate-800">Launch
+                    App &rarr;</a>
+            </div>
+        </div>
+    </header>
 
-      // Load GA
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
-      document.head.appendChild(s);
+    <!-- Main Content -->
+    <main class="flex-grow pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      window.__gtagLoaded = true;
-      gtag('js', new Date());
+            <!-- Hero Section -->
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
+                <!-- Text Content -->
+                <div class="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
+                    <div
+                        class="inline-flex items-center px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-semibold mb-6 animate-pulse">
+                        <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2"></span>
+                        v2.0 Beta Live
+                    </div>
+                    <h1
+                        class="text-5xl tracking-tight font-extrabold text-white sm:text-6xl md:text-6xl lg:text-5xl xl:text-6xl">
+                        <span class="block">Institutional Grade</span>
+                        <span class="block text-gradient">Crypto Analytics</span>
+                    </h1>
+                    <p
+                        class="mt-4 text-lg text-slate-400 sm:mt-5 sm:text-xl sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                        Stop trading on noise. Get real-time snapshots, rule-based heuristics, and clearer signals.
+                        Built for speed, designed for clarity.
+                    </p>
 
-      // Default consent according to user's choice
-      gtag('consent', 'default', {
-        ad_storage: consent.ads ? 'granted' : 'denied',
-        ad_user_data: consent.ads ? 'granted' : 'denied',
-        ad_personalization: consent.ads ? 'granted' : 'denied',
-        analytics_storage: consent.analytics ? 'granted' : 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted'
-      });
+                    <!-- KPI Cards (Mini) -->
+                    <div class="mt-8 grid grid-cols-3 gap-4 border-t border-slate-800 pt-8">
+                        <div>
+                            <div class="text-2xl font-bold text-white" data-count-to="200">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mt-1">Assets
+                                Tracked</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white" data-count-to="36">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mt-1">Daily Signals
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white" data-count-to="3">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold mt-1">Data Feeds
+                            </div>
+                        </div>
+                    </div>
 
-      gtag('config', GA_ID, { anonymize_ip: true });
+                    <div class="mt-8 sm:mt-10 sm:flex sm:justify-center lg:justify-start gap-4">
+                        <a href="analytics.html"
+                            class="btn-primary w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-xl md:py-4 md:text-lg md:px-10">
+                            Launch Dashboard
+                        </a>
+                        <a href="#features"
+                            class="btn-ghost w-full flex items-center justify-center px-8 py-3 text-base font-medium rounded-xl md:py-4 md:text-lg md:px-10 mt-3 sm:mt-0">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
 
-      // Load AdSense only if ads are allowed
-      if (consent.ads) {
-        const s2 = document.createElement('script');
-        s2.async = true;
-        s2.crossOrigin = 'anonymous';
-        s2.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ADS_CLIENT);
-        s2.setAttribute('data-ad-client', ADS_CLIENT);
-        document.head.appendChild(s2);
+                <!-- Graphic Content (Tilt Card) -->
+                <div
+                    class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
+                    <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+                        <div id="tilt-card"
+                            class="relative block w-full bg-slate-900 rounded-2xl overflow-hidden glass-card transform transition-transform duration-200">
+                            <!-- Glow effects -->
+                            <div
+                                class="absolute -top-10 -right-10 w-40 h-40 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20">
+                            </div>
+                            <div
+                                class="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20">
+                            </div>
 
-        // For site-wide non-personalised ads, you can enable:
-        // (adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
-      }
-    };
-  })();
-  </script>
+                            <!-- Fake UI -->
+                            <div class="p-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <div class="h-3 w-24 bg-slate-700 rounded animate-pulse"></div>
+                                    <div
+                                        class="h-6 w-16 bg-emerald-500/20 rounded-full text-emerald-400 text-xs flex items-center justify-center font-bold">
+                                        LIVE</div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <!-- Item 1 -->
+                                    <div
+                                        class="flex items-center justify-between p-3 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-xs">
+                                                B</div>
+                                            <div>
+                                                <div class="text-sm font-semibold text-white">Bitcoin</div>
+                                                <div class="text-xs text-slate-400">Momentum Long</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-emerald-400 font-mono text-sm">↗ +1.8%</div>
+                                    </div>
+
+                                    <!-- Item 2 -->
+                                    <div
+                                        class="flex items-center justify-between p-3 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold text-xs">
+                                                E</div>
+                                            <div>
+                                                <div class="text-sm font-semibold text-white">Ethereum</div>
+                                                <div class="text-xs text-slate-400">Reversal Watch</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-slate-400 font-mono text-sm">→ 0.0%</div>
+                                    </div>
+
+                                    <!-- Item 3 -->
+                                    <div
+                                        class="flex items-center justify-between p-3 rounded-lg bg-slate-800/50 border border-slate-700/50">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs">
+                                                S</div>
+                                            <div>
+                                                <div class="text-sm font-semibold text-white">Solana</div>
+                                                <div class="text-xs text-slate-400">Dip Short</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-rose-400 font-mono text-sm">↘ -2.4%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ticker Strip -->
+                            <div class="bg-slate-900/80 border-t border-slate-800 py-2">
+                                <div class="ticker-wrap">
+                                    <div class="ticker-content text-xs font-mono text-slate-400">
+                                        <span class="mx-4">BTC $92,400</span>
+                                        <span class="mx-4">ETH $2,640</span>
+                                        <span class="mx-4">SOL $184</span>
+                                        <span class="mx-4">BNB $620</span>
+                                        <span class="mx-4">ADA $0.45</span>
+                                        <span class="mx-4">XRP $0.62</span>
+                                        <span class="mx-4">AVAX $34</span>
+                                        <!-- Repeat for smoothness -->
+                                        <span class="mx-4">BTC $92,400</span>
+                                        <span class="mx-4">ETH $2,640</span>
+                                        <span class="mx-4">SOL $184</span>
+                                        <span class="mx-4">BNB $620</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div id="features" class="mt-24 sm:mt-32">
+                <div class="text-center">
+                    <h2 class="text-base font-semibold text-indigo-400 tracking-wide uppercase">Core Features</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">Everything
+                        you need, nothing you don't.</p>
+                </div>
+
+                <div class="mt-10">
+                    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
+                                <i data-lucide="camera" class="text-indigo-400"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-white">Snapshot & movers</h3>
+                            <p class="mt-2 text-slate-400 text-sm">Instant visual breakdown of market cap, volume, and
+                                dominance. Know the daily leaders instantly.</p>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
+                                <i data-lucide="trending-up" class="text-purple-400"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-white">Trending & News</h3>
+                            <p class="mt-2 text-slate-400 text-sm">Aggregated trending lists from CoinGecko paired with
+                                curated headlines for maximum context.</p>
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                                <i data-lucide="zap" class="text-cyan-400"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-white">Rule-Based Ideas</h3>
+                            <p class="mt-2 text-slate-400 text-sm">Automated watchlists for Momentum Longs, Dip Shorts,
+                                and Reversals based on proven heuristics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/50 bg-slate-900/50 mt-auto">
+        <div
+            class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-slate-400 text-sm order-2 md:order-1">
+                &copy; <span id="year">2026</span> Fhatal Studios. All rights reserved.
+            </div>
+            <div class="flex space-x-6 order-1 md:order-2">
+                <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm" id="link-manage-cookies">
+                    Manage Cookies
+                </a>
+                <a href="terms.html" class="text-slate-400 hover:text-white transition-colors text-sm">
+                    Terms of Service
+                </a>
+                <a href="mailto:support@fhatal.com" class="text-slate-400 hover:text-white transition-colors text-sm">
+                    Contact
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cookie Banner (Bottom Bar) -->
+    <div id="cookie-banner"
+        class="fixed bottom-0 left-0 right-0 z-[100] transform translate-y-full transition-transform duration-300">
+        <div class="max-w-7xl mx-auto p-4">
+            <div
+                class="glass-card p-4 sm:p-5 rounded-xl border-t border-indigo-500/30 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-sm text-slate-300 flex-1">
+                    <p class="font-semibold text-white mb-1">We value your privacy</p>
+                    <p>We use cookies to enhance your experience and analyze traffic. Essential cookies are always on.
+                        We do not show personalized ads.</p>
+                </div>
+                <div class="flex gap-3 shrink-0">
+                    <button id="btn-reject-all" class="btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Reject
+                        Optional</button>
+                    <button id="btn-customize"
+                        class="btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Customize</button>
+                    <button id="btn-accept-all" class="btn-primary px-4 py-2 rounded-lg text-xs font-semibold">Accept
+                        All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Preferences Modal -->
+    <div id="cookie-preferences-modal"
+        class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+        <div
+            class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden glass-card">
+            <div class="p-6 border-b border-slate-700">
+                <h3 class="text-xl font-bold text-white">Cookie Preferences</h3>
+                <p class="text-slate-400 text-sm mt-1">Manage your consent settings.</p>
+            </div>
+            <div class="p-6 space-y-4">
+                <!-- Necessary -->
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h4 class="text-base font-semibold text-white">Necessary</h4>
+                        <p class="text-xs text-slate-400 max-w-[250px]">Required for the site to function (security,
+                            session).</p>
+                    </div>
+                    <div>
+                        <input type="checkbox" checked disabled
+                            class="w-5 h-5 rounded border-slate-600 bg-indigo-500 text-indigo-500 focus:ring-indigo-500 opacity-50 cursor-not-allowed">
+                    </div>
+                </div>
+                <!-- Analytics -->
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h4 class="text-base font-semibold text-white">Analytics</h4>
+                        <p class="text-xs text-slate-400 max-w-[250px]">Help us improve by understanding how you use the
+                            site.</p>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="chk-analytics" name="consent-type" value="analytics"
+                            class="w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500">
+                    </div>
+                </div>
+                <!-- Ads (Hidden/Disabled visually but logic exists if needed) -->
+                <!-- Removed from UI as requested -->
+            </div>
+            <div class="p-4 bg-black/20 flex justify-end gap-3">
+                <button id="btn-close-modal" class="btn-ghost px-4 py-2 rounded-lg text-sm">Cancel</button>
+                <button id="btn-save-preferences" class="btn-primary px-4 py-2 rounded-lg text-sm">Save
+                    Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Icons Init -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Main Logic -->
+    <script src="assets/js/main.js"></script>
 </body>
+
 </html>

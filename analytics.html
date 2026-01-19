@@ -1,715 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="utf-8" />
-  <title>FhatalX - Analytics | Snapshot • Trends • News • Suggestions</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+  <title>FhatalX - Analytics Dashboard</title>
+
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-x-32.png">
 
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <meta name="color-scheme" content="dark light" />
-  <style>
-    :root { --ring: rgba(109,94,247,.35); --brand1:#6366f1; --brand2:#a855f7; }
-    .card { @apply bg-slate-900/70 border border-slate-700 rounded-2xl shadow-xl; }
-    .glass { @apply bg-slate-800/50 backdrop-blur; }
-    .btn{
-      display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
-      border-radius: 12px; padding: .55rem .9rem; font-size: .875rem; font-weight: 600; line-height: 1;
-      border: 1px solid rgba(148,163,184,.25);
-      background: linear-gradient(135deg,var(--brand1),var(--brand2));
-      color:#fff; text-decoration:none;
-      box-shadow: 0 12px 28px -12px rgba(99,102,241,.6), inset 0 -1px 0 rgba(255,255,255,.06);
-      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease, background .2s ease, border-color .2s ease;
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { dark: '#050b14', primary: '#6366f1', secondary: '#a855f7', accent: '#06b6d4' }
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
     }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); box-shadow: 0 16px 36px -14px rgba(99,102,241,.65); }
-    .btn:active{ transform: translateY(0); filter: brightness(.98); }
-    .btn:focus-visible{ outline:none; box-shadow: 0 0 0 3px var(--ring), 0 16px 36px -14px rgba(99,102,241,.65); }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; filter:none; }
+  </script>
 
-    .btn-ghost{
-      display:inline-flex; align-items:center; gap:.5rem; justify-content:center;
-      border-radius: 12px; padding: .55rem .9rem; font-size: .875rem; font-weight: 600; line-height:1;
-      border: 1px solid #475569; color:#e2e8f0; text-decoration:none;
-      background: linear-gradient(180deg, rgba(148,163,184,.08), rgba(148,163,184,.02));
-      transition: background .2s ease, border-color .2s ease, transform .15s ease, box-shadow .2s ease;
-    }
-    .btn-ghost:hover{ border-color: var(--brand1); background: rgba(99,102,241,.08); transform: translateY(-1px); }
-    .btn-ghost:active{ transform: translateY(0); }
-    .btn-ghost:focus-visible{ outline:none; box-shadow: 0 0 0 3px var(--ring); }
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
 
-    .btn-icon svg{ width: 1rem; height: 1rem; opacity:.95; flex-shrink:0 }
-    .btn-spinner{
-      display:none; width:1rem; height:1rem; border:2px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:9999px;
-      animation: fx-spin 1s linear infinite;
-    }
-    .btn.is-loading .btn-spinner{ display:inline-block; }
-    .btn.is-loading .btn-label{ opacity:.7; }
-    .btn.is-loading svg{ display:none; }
-    @keyframes fx-spin{ to{ transform: rotate(360deg) } }
-
-    /* Loading overlay */
-    #loadingOverlay{ position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center;
-      background: radial-gradient(800px 500px at 30% 20%, #11183a 0%, #0b0f1a 55%, #06080f 100%); transition: opacity 1.2s; opacity:1 }
-    #loadingOverlay.hide{ opacity:0; pointer-events:none }
-    .pulse-logo{ width:90px; height:90px; border-radius:1.5rem; background:linear-gradient(120deg,#6366f1 60%,#a5b4fc 100%);
-      display:grid; place-items:center; font-size:2rem; color:#fff; box-shadow: 0 0 40px 10px #6366f1a0; animation:pulse 1.2s infinite alternate; }
-    @keyframes pulse{0%{transform:scale(1)}100%{transform:scale(1.1)}}
-    .loading-bar{ width:120px; height:8px; border-radius:8px; background:#1e293b; margin: 1rem auto 0; overflow:hidden }
-    .loading-bar-inner{ height:100%; width:0; background:linear-gradient(90deg,#6366f1 0%,#a5b4fc 100%); border-radius:8px; animation:barmove 1.6s linear forwards }
-    @keyframes barmove{0%{width:0}80%{width:100%}100%{width:100%}}
-    .fx-logo-img{ width:160px; height:auto; max-width:80vw; object-fit:contain; display:block }
-    @media (max-width:640px){ .fx-logo-img{ width:110px } }
-
-    /* Ads: off on small screens */
-    .fx-ad-banner{ position:fixed; top:0; bottom:0; width:160px; z-index:1050; display:flex; align-items:center; justify-content:center; pointer-events:auto; background:transparent }
-    .fx-ad-banner-left{ left:0 } .fx-ad-banner-right{ right:0 }
-    @media (max-width:1200px){ .fx-ad-banner{ display:none !important } }
-
-    body{ background: radial-gradient(1200px 800px at 20% 10%,#0e1530 0%,#0b0f1a 55%,#06080f 100%); }
-
-    /* Cookie banner helper shadow */
-    .shadow-up { box-shadow: 0 -18px 60px rgba(0,0,0,.35); }
-  </style>
-
-  <!-- NOTE: GA & AdSense are loaded via consent-controlled loader below. Do NOT add direct async tags here. -->
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="min-h-screen text-slate-100">
-  <!-- Loading -->
-  <div id="loadingOverlay">
-    <div class="flex flex-col items-center">
-      <img src="logo.png" alt="FhatalX Logo" class="fx-logo-img mb-3 rounded-2xl shadow-lg" />
-      <div class="loading-bar"><div class="loading-bar-inner"></div></div>
-      <div class="mt-3 text-sm text-indigo-200">Loading FhatalX Analytics</div>
+
+<body class="antialiased min-h-screen flex flex-col overflow-x-hidden">
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-[#050b14] transition-opacity duration-500">
+    <div class="text-center">
+      <img src="logo.png"
+        class="w-24 h-24 rounded-2xl mx-auto mb-4 shadow-[0_0_40px_rgba(99,102,241,0.3)] animate-pulse">
+      <div class="w-48 h-1 bg-slate-800 rounded-full mx-auto overflow-hidden">
+        <div class="h-full bg-indigo-500 animate-progress origin-left" style="width: 50%"></div>
+      </div>
+      <div class="mt-2 text-xs text-slate-500 font-mono">INITIALIZING DATA STREAMS</div>
     </div>
   </div>
 
-  <!-- Nav -->
-  <header class="z-50 glass border-b border-slate-800">
-    <div class="mx-auto max-w-7xl px-2 sm:px-4 py-3 sm:py-4 flex flex-wrap items-center gap-2 sm:gap-3">
-      <a href="index.html" class="flex items-center gap-2">
-        <img src="logo.png" alt="FhatalX Logo" class="fx-logo-img" />
-      </a>
-      <nav class="flex items-center gap-2">
-        <a href="index.html" class="btn-ghost">Home</a>
-        <a href="analytics.html" class="btn-ghost">Analytics</a>
-        <a href="terms.html" class="btn-ghost">Terms</a>
-      </nav>
-      <div class="ml-auto flex flex-wrap items-center gap-2 w-full sm:w-auto">
-        <label class="text-xs sm:text-sm text-slate-300">Fiat</label>
-        <select id="fiat" class="px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-xs sm:text-sm">
-          <option value="usd" selected>USD</option>
-          <option value="eur">EUR</option>
-        </select>
-        <input id="search" placeholder="Search coin… (e.g. sol, arb)" class="px-3 py-1 rounded-md bg-slate-800 border border-slate-700 w-44 text-sm" />
-        <button id="refresh" class="btn btn-icon">
-          <!-- refresh icon -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v6h-6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="btn-label">Refresh</span>
-          <span class="btn-spinner" aria-hidden="true"></span>
-        </button>
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-40 glass border-b border-slate-800/50">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center gap-4">
+          <a href="index.html" class="flex items-center gap-2 group">
+            <img src="logo.png" alt="FhatalX"
+              class="h-9 w-auto rounded-lg transition-transform group-hover:scale-105" />
+          </a>
+
+          <!-- Quick Nav -->
+          <nav class="hidden md:flex ml-4 space-x-1 pl-4 border-l border-slate-800">
+            <a href="index.html"
+              class="px-3 py-1.5 rounded-md text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-all">Home</a>
+            <a href="analytics.html"
+              class="px-3 py-1.5 rounded-md text-sm font-medium text-white bg-slate-800/80 transition-all">Analytics</a>
+          </nav>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div class="relative hidden sm:block">
+            <input id="search" type="text" placeholder="Search (e.g. SOL)..."
+              class="bg-slate-900/50 border border-slate-700 rounded-lg py-1.5 px-3 pl-9 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 w-40 sm:w-64 transition-all">
+            <i data-lucide="search" class="absolute left-2.5 top-2 w-4 h-4 text-slate-500"></i>
+          </div>
+
+          <select id="fiat"
+            class="bg-slate-900/50 border border-slate-700 rounded-lg py-1.5 px-2 text-xs sm:text-sm text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+            <option value="usd">USD</option>
+            <option value="eur">EUR</option>
+          </select>
+
+          <button id="refresh" class="btn-ghost p-2 rounded-lg relative overflow-hidden group">
+            <i data-lucide="refresh-cw"
+              class="w-4 h-4 text-slate-300 group-hover:text-white transition-colors animate-spin hidden"></i>
+            <i data-lucide="refresh-cw" class="w-4 h-4 text-slate-300 group-hover:text-white transition-colors"></i>
+          </button>
+
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" class="md:hidden btn-ghost p-2 rounded-lg">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu (Placeholder linked to main.js) -->
+    <div class="md:hidden" id="mobile-menu">
+      <div class="px-4 py-3 space-y-2">
+        <input type="text" placeholder="Search coins..."
+          class="w-full bg-slate-900/50 border border-slate-700 rounded-lg py-2 px-3 text-sm text-white mb-3">
+        <a href="index.html" class="block text-slate-300 py-2">Home</a>
+        <a href="analytics.html" class="block text-white font-bold py-2">Analytics Dashboard</a>
+        <a href="terms.html" class="block text-slate-300 py-2">Terms</a>
       </div>
     </div>
   </header>
 
-  <main class="mx-auto max-w-7xl px-2 sm:px-4 py-5 sm:py-7 space-y-6">
-    <!-- Favorites -->
-    <section id="favoritesSection" class="card p-4 w-full" style="display:none;">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold">Favorites</h2>
-        <div class="text-xs text-slate-400">Your favorite coins</div>
-      </div>
-      <div id="favorites" class="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3"></div>
-    </section>
+  <main class="flex-grow pt-20 pb-12 px-2 sm:px-4">
+    <div class="max-w-screen-2xl mx-auto space-y-6">
 
-    <!-- Suggestions -->
-    <section class="card p-4 w-full">
-      <div class="flex items-center justify-between">
-        <h2 class="text-lg font-semibold">Suggestions (Quant heuristics)</h2>
-        <div class="text-xs text-slate-400">Not financial advice. Rules described below.</div>
-      </div>
-      <div id="ideas" class="mt-3 grid grid-cols-1 gap-4"></div>
-      <details class="mt-4 text-sm text-slate-300">
-        <summary class="cursor-pointer">Heuristics used</summary>
-        <ul class="list-disc ml-5 mt-2 space-y-1">
-          <li><b>Momentum long</b> – 1h &gt; 0, 24h ≥ 5%, 7d ≥ 10%.</li>
-          <li><b>Dip short candidate</b> – 24h ≤ −7% while 7d &lt; 0.</li>
-          <li><b>Reversal watch</b> – 24h &lt; 0 but 1h ≥ 1% and 7d &gt; −3%.</li>
-        </ul>
-      </details>
-    </section>
+      <!-- Snapshot Row -->
+      <section id="snapshot" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"></section>
 
-    <!-- Snapshot -->
-    <section class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3" id="snapshot"></section>
-
-    <!-- Movers + Trending + News -->
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="card p-4">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold">Top Movers (24h)</h2>
-          <div class="text-xs text-slate-400" id="moversNote"></div>
+      <!-- Favorites (Dynamic) -->
+      <section id="favoritesSection" class="hidden animate-fade-in">
+        <div class="flex items-center gap-2 mb-3 px-1">
+          <i data-lucide="star" class="w-4 h-4 text-yellow-400 fill-current"></i>
+          <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Watchlist</h2>
         </div>
-        <div id="movers" class="mt-3 space-y-2"></div>
-      </div>
+        <div id="favorites" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+      </section>
 
-      <div class="card p-4">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold">Trending (CoinGecko)</h2>
-          <div class="text-xs text-slate-400" id="trendingNote"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Main Column (Movers & Charts) -->
+        <div class="lg:col-span-8 space-y-6">
+          <!-- Heuristics Ideas -->
+          <section>
+            <div class="flex items-center gap-2 mb-3 px-1">
+              <i data-lucide="zap" class="w-4 h-4 text-indigo-400"></i>
+              <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wide">Heuristic Signals</h2>
+            </div>
+            <div id="ideas" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+            <div class="mt-2 text-[10px] text-slate-500 text-center">
+              *Automated heuristics based on volatility, RSI proxies, and volume. Not financial advice.
+            </div>
+          </section>
+
+          <!-- Market Movers -->
+          <section class="glass-card p-1 rounded-xl">
+            <div class="p-4 border-b border-slate-700/50 flex justify-between items-center">
+              <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                Market Movers
+              </h2>
+              <span id="moversNote" class="text-xs text-slate-500 font-mono">Loading...</span>
+            </div>
+            <div id="movers" class="grid md:grid-cols-2 gap-0 md:gap-4 p-4 divide-y md:divide-y-0 divide-slate-800">
+            </div>
+          </section>
         </div>
-        <div id="trending" class="mt-3 grid sm:grid-cols-2 gap-3"></div>
-      </div>
 
-      <div class="card p-4">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold">Headlines</h2>
-          <div class="text-xs text-slate-400"></div>
+        <!-- Side Column (News & Trending) -->
+        <div class="lg:col-span-4 space-y-6">
+
+          <!-- Trending -->
+          <section class="glass-card p-4 rounded-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="trending-up" class="w-4 h-4 text-orange-400"></i>
+                Trending
+              </h2>
+              <span id="trendingNote" class="text-xs text-slate-500"></span>
+            </div>
+            <div id="trending" class="space-y-3"></div>
+          </section>
+
+          <!-- News -->
+          <section class="glass-card p-4 rounded-xl">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-base font-bold text-white flex items-center gap-2">
+                <i data-lucide="newspaper" class="w-4 h-4 text-slate-300"></i>
+                Latest News
+              </h2>
+            </div>
+            <div id="news" class="space-y-2 max-h-[500px] overflow-y-auto pr-1 custom-scrollbar"></div>
+          </section>
         </div>
-        <div id="news" class="mt-4 space-y-3"></div>
+
       </div>
-    </section>
-
-    <!-- Notes -->
-    <section class="text-xs text-slate-400 leading-relaxed">
-      <h3 class="font-semibold text-slate-300">Notes</h3>
-      <ul class="list-disc ml-5 mt-2 space-y-1">
-        <li>Market data from public APIs (e.g., CoinGecko, Binance). Rate limits apply.</li>
-        <li>News via RSS to JSON gateway. Provide your endpoint if CORS blocks.</li>
-        <li>Signals are rule-based heuristics for idea generation only.</li>
-      </ul>
-    </section>
-
-    <footer class="mt-8 mb-4 text-center text-xs text-slate-500">
-      © <span id="fx-year"></span> fhatal.com · Live market data belongs to respective owners.
-      · <button id="footerManageCookies" class="btn-ghost ml-1">Manage cookies</button>
-    </footer>
+    </div>
   </main>
 
-  <!-- Ads (deferred; rendered only if user consents to Ads/Marketing) -->
-  <div class="fx-ad-banner fx-ad-banner-left">
-    <ins class="adsbygoogle" style="display:block;width:160px;height:600px" data-ad-client="ca-pub-2697517525197581" data-ad-slot="1234567890"></ins>
-    <script type="text/plain" data-consent="ads">(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-  <div class="fx-ad-banner fx-ad-banner-right">
-    <ins class="adsbygoogle" style="display:block;width:160px;height:600px" data-ad-client="ca-pub-2697517525197581" data-ad-slot="1234567890"></ins>
-    <script type="text/plain" data-consent="ads">(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/50 bg-slate-900/50 mt-auto">
+    <div
+      class="max-w-7xl mx-auto py-6 px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+      <div>
+        &copy; <span id="year">2026</span> Fhatal Studios. Data by CoinGecko & Binance.
+      </div>
+      <div class="flex gap-4">
+        <button id="link-manage-cookies" class="hover:text-white transition-colors">Manage Cookies</button>
+        <a href="terms.html" class="hover:text-white transition-colors">Terms</a>
+      </div>
+    </div>
+  </footer>
 
-  <!-- Cookie Banner (first layer) -->
-  <div id="cookieBanner" class="fixed inset-x-0 bottom-0 z-50 shadow-up hidden">
-    <div class="mx-auto max-w-5xl m-2 sm:m-4 p-3 sm:p-4 rounded-xl glass border border-slate-700">
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
-        <div class="text-sm">
-          <div class="font-semibold">We use cookies for essential features, analytics, and ads.</div>
-          <div class="text-slate-400 text-xs mt-1">
-            <em>Sivuston toiminnan ja turvallisuuden kannalta välttämättömät evästeet</em> are always on. Choose the rest below.
-          </div>
+  <!-- Global Assets -->
+  <div id="cookie-banner"
+    class="fixed bottom-0 left-0 right-0 z-[100] transform translate-y-full transition-transform duration-300">
+    <div class="max-w-7xl mx-auto p-4">
+      <div
+        class="glass-card p-4 sm:p-5 rounded-xl border-t border-indigo-500/30 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-sm text-slate-300 flex-1">
+          <p class="font-semibold text-white mb-1">We value your privacy</p>
+          <p>We use cookies to enhance your experience and analyze traffic. Essential cookies are always on.</p>
         </div>
-        <div class="flex gap-2 sm:ml-auto">
-          <button id="cb-reject" class="btn-ghost text-xs">Reject non-essential</button>
-          <button id="cb-customize" class="btn-ghost text-xs">Customize</button>
-          <button id="cb-accept" class="btn text-xs">Accept all</button>
+        <div class="flex gap-3 shrink-0">
+          <button id="btn-reject-all" class="btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Reject
+            Optional</button>
+          <button id="btn-customize" class="btn-ghost px-4 py-2 rounded-lg text-xs font-semibold">Customize</button>
+          <button id="btn-accept-all" class="btn-primary px-4 py-2 rounded-lg text-xs font-semibold">Accept All</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Preferences Modal (second layer) -->
-  <div id="cookieModal" class="hidden fixed inset-0 z-50">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-    <div class="relative mx-auto mt-20 max-w-lg w-[92%]">
-      <div class="glass border border-slate-700 rounded-2xl p-4 sm:p-5">
-        <h3 class="text-lg font-semibold">Cookie Preferences</h3>
-        <p class="text-slate-400 text-sm mt-1">Select what you want to allow. Necessary cookies are always on.</p>
-
-        <div class="mt-3 space-y-3">
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Necessary</div>
-              <div class="text-xs text-slate-400">Security, load balancing, consent storage.</div>
-            </div>
-            <input type="checkbox" checked disabled class="w-10 h-6 rounded-full appearance-none bg-slate-600">
-          </div>
-
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Analytics</div>
-              <div class="text-xs text-slate-400">Anonymous/aggregated usage measurement.</div>
-            </div>
-            <input id="consent-analytics" type="checkbox" class="w-10 h-6 rounded-full appearance-none bg-slate-700 checked:bg-indigo-600">
-          </div>
-
-          <div class="flex items-start justify-between gap-3 border-t border-slate-700 pt-3">
-            <div>
-              <div class="font-semibold">Ads/Marketing</div>
-              <div class="text-xs text-slate-400">Ad delivery and measurement.</div>
-            </div>
-            <input id="consent-ads" type="checkbox" class="w-10 h-6 rounded-full appearance-none bg-slate-700 checked:bg-indigo-600">
-          </div>
-        </div>
-
-        <div class="mt-4 flex justify-end gap-2">
-          <button id="modal-reject" class="btn-ghost text-xs">Reject non-essential</button>
-          <button id="modal-save" class="btn-ghost text-xs">Save choices</button>
-          <button id="modal-accept" class="btn text-xs">Accept all</button>
-        </div>
+  <div id="cookie-preferences-modal"
+    class="hidden fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden glass-card">
+      <div class="p-6 border-b border-slate-700">
+        <h3 class="text-xl font-bold text-white">Cookie Preferences</h3>
+        <p class="text-slate-400 text-sm mt-1">Manage your consent settings.</p>
       </div>
-    </div>
-  </div>
-
-  <!-- Consent Manager (GDPR/ePrivacy, Consent Mode v2) -->
-  <script>
-  (function(){
-    const KEY='fhatalx_cookie_consent_v2';
-    const $=id=>document.getElementById(id);
-
-    const banner=$('cookieBanner');
-    const modal=$('cookieModal');
-    const aChk=$('consent-analytics');
-    const mChk=$('consent-ads');
-
-    function getConsent(){ try{return JSON.parse(localStorage.getItem(KEY))||null;}catch(e){return null;} }
-    function setConsent(obj){ localStorage.setItem(KEY, JSON.stringify({...obj, ts:new Date().toISOString(), v:2})); }
-    function showBanner(){ banner?.classList.remove('hidden'); }
-    function hideBanner(){ banner?.classList.add('hidden'); }
-    function openModal(){ modal?.classList.remove('hidden'); }
-    function closeModal(){ modal?.classList.add('hidden'); }
-
-    // Run <script type="text/plain" data-consent="..."> once category allowed
-    function runDeferredScripts(consent){
-      const allowed=new Set(['necessary']);
-      if(consent.analytics) allowed.add('analytics');
-      if(consent.ads) allowed.add('ads');
-      document.querySelectorAll('script[type="text/plain"][data-consent]').forEach(tag=>{
-        if(!allowed.has(tag.getAttribute('data-consent'))) return;
-        const s=document.createElement('script');
-        for(const {name,value} of Array.from(tag.attributes)){
-          if(name==='type'||name==='data-consent') continue;
-          s.setAttribute(name,value);
-        }
-        s.text=tag.text; tag.parentNode.replaceChild(s,tag);
-      });
-    }
-
-    const saved=getConsent();
-    if(!saved){ showBanner(); } else { runDeferredScripts(saved); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(saved); }
-
-    // Banner
-    $('cb-reject')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:false,ads:false}; setConsent(c); hideBanner(); closeModal(); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('cb-accept')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:true,ads:true}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('cb-customize')?.addEventListener('click', ()=>{ const c=getConsent()||{necessary:true,analytics:false,ads:false}; if(aChk) aChk.checked=!!c.analytics; if(mChk) mChk.checked=!!c.ads; openModal(); });
-
-    // Modal
-    $('modal-reject')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:false,ads:false}; setConsent(c); hideBanner(); closeModal(); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('modal-accept')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:true,ads:true}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-    $('modal-save')?.addEventListener('click', ()=>{ const c={necessary:true,analytics:!!aChk?.checked,ads:!!mChk?.checked}; setConsent(c); hideBanner(); closeModal(); runDeferredScripts(c); if(window.__fhatalxLoadGtag) window.__fhatalxLoadGtag(c); });
-
-    // Footer manage
-    $('footerManageCookies')?.addEventListener('click', ()=>{ const c=getConsent()||{necessary:true,analytics:false,ads:false}; if(aChk) aChk.checked=!!c.analytics; if(mChk) mChk.checked=!!c.ads; openModal(); });
-  })();
-  </script>
-
-  <!-- GA4 + AdSense loader (Consent Mode v2) -->
-  <script>
-  (function(){
-    const GA_ID = 'G-J7V1YMQ77C';
-    const ADS_CLIENT = 'ca-pub-2697517525197581';
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-
-    // Exposed hook used by the consent manager above
-    window.__fhatalxLoadGtag = function(consent){
-      if (window.__gtagLoaded) {
-        // Update consent only
-        gtag('consent', 'update', {
-          ad_storage: consent.ads ? 'granted' : 'denied',
-          ad_user_data: consent.ads ? 'granted' : 'denied',
-          ad_personalization: consent.ads ? 'granted' : 'denied',
-          analytics_storage: consent.analytics ? 'granted' : 'denied',
-          functionality_storage: 'granted',
-          security_storage: 'granted'
-        });
-        return;
-      }
-
-      // Load GA
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
-      document.head.appendChild(s);
-
-      window.__gtagLoaded = true;
-      gtag('js', new Date());
-
-      // Default consent according to user's choice
-      gtag('consent', 'default', {
-        ad_storage: consent.ads ? 'granted' : 'denied',
-        ad_user_data: consent.ads ? 'granted' : 'denied',
-        ad_personalization: consent.ads ? 'granted' : 'denied',
-        analytics_storage: consent.analytics ? 'granted' : 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted'
-      });
-
-      gtag('config', GA_ID, { anonymize_ip: true });
-
-      // Load AdSense only if ads are allowed
-      if (consent.ads) {
-        const s2 = document.createElement('script');
-        s2.async = true;
-        s2.crossOrigin = 'anonymous';
-        s2.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ADS_CLIENT);
-        s2.setAttribute('data-ad-client', ADS_CLIENT);
-        document.head.appendChild(s2);
-        // If you want non-personalised ads globally:
-        // (adsbygoogle = window.adsbygoogle || []).requestNonPersonalizedAds = 1;
-      }
-    };
-  })();
-  </script>
-
-  <!-- === Your original data/logic (unchanged, except footer manage + overlay timing) === -->
-  <script>
-    const gecko = {
-      markets: (vs) => `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${vs}&order=market_cap_desc&per_page=200&page=1&sparkline=false&price_change_percentage=1h,24h,7d,30d`,
-      global: `https://api.coingecko.com/api/v3/global`,
-      trending: `https://api.coingecko.com/api/v3/search/trending`,
-    };
-
-    const els = {
-      fiat: document.getElementById('fiat'),
-      search: document.getElementById('search'),
-      refresh: document.getElementById('refresh'),
-      snapshot: document.getElementById('snapshot'),
-      movers: document.getElementById('movers'),
-      moversNote: document.getElementById('moversNote'),
-      trending: document.getElementById('trending'),
-      trendingNote: document.getElementById('trendingNote'),
-      news: document.getElementById('news'),
-      ideas: document.getElementById('ideas'),
-    };
-
-    const fmt = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
-    const pct = (v) => (v === null || v === undefined) ? '—' : `${v.toFixed(2)}%`;
-    const cur = (code) => new Intl.NumberFormat(undefined, { style:'currency', currency: code.toUpperCase(), maximumFractionDigits:2 });
-
-    let state = { vs: 'usd', markets: [], global: null, trending: [], filtered: [] };
-
-    function setLoading(container, rows=3){
-      container.innerHTML = '';
-      for(let i=0;i<rows;i++){
-        const d = document.createElement('div');
-        d.className = 'skeleton h-10 rounded-lg';
-        container.appendChild(d);
-      }
-    }
-
-    function badge(val){
-      const good = val >= 0;
-      const cls = good ? 'bg-emerald-900/40 text-emerald-300 border-emerald-700' : 'bg-rose-900/40 text-rose-300 border-rose-700';
-      return `<span class="px-2 py-0.5 text-xs border rounded-md ${cls}">${pct(val)}</span>`;
-    }
-
-    function chip(text){
-      return `<span class="px-2 py-0.5 text-xs rounded-md bg-slate-800 border border-slate-700">${text}</span>`;
-    }
-
-    async function fetchJSON(url){
-      const r = await fetch(url, { headers: { 'accept': 'application/json' }});
-      if(!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.json();
-    }
-
-    // Binance tradable cache
-    let binanceSymbols = null;
-    async function getBinanceSymbols() {
-      if (binanceSymbols) return binanceSymbols;
-      try {
-        const res = await fetch('https://api.binance.com/api/v3/exchangeInfo');
-        const data = await res.json();
-        binanceSymbols = new Set(data.symbols.map(s => s.baseAsset.toLowerCase()));
-      } catch (e) { binanceSymbols = new Set(); }
-      return binanceSymbols;
-    }
-
-    async function loadAll(){
-      const vs = state.vs;
-      setLoading(els.movers, 6);
-      setLoading(els.trending, 4);
-      els.snapshot.innerHTML = '';
-      for(let i=0;i<4;i++){
-        const s = document.createElement('div'); s.className = 'card p-4 skeleton h-24'; els.snapshot.appendChild(s);
-      }
-      const [global, markets, trending] = await Promise.all([
-        fetchJSON(gecko.global),
-        fetchJSON(gecko.markets(vs)),
-        fetchJSON(gecko.trending),
-      ]);
-
-      state.global = global.data;
-      state.markets = markets;
-      state.filtered = markets;
-      state.trending = trending.coins?.map(c => c.item) || [];
-      state.binanceTradable = await getBinanceSymbols();
-
-      renderSnapshot(); renderMovers(); renderTrending(); renderIdeas(); renderFavorites();
-      if(!els.news.dataset.loaded){ loadNews(); }
-    }
-
-    function renderSnapshot(){
-      const g = state.global;
-      const c = cur(state.vs);
-      const mcap = g.total_market_cap[state.vs] ?? 0;
-      const vol = g.total_volume[state.vs] ?? 0;
-      const btcDom = g.market_cap_percentage?.btc ?? null;
-      const act = g.active_cryptocurrencies;
-
-      const items = [
-        { title:'Total Market Cap', value: c.format(mcap) },
-        { title:'24h Volume', value: c.format(vol) },
-        { title:'BTC Dominance', value: btcDom===null ? '—' : `${btcDom.toFixed(1)}%` },
-        { title:'Active Cryptos', value: fmt.format(act) }
-      ];
-
-      els.snapshot.innerHTML = items.map(x=>`
-        <div class="card p-4">
-          <div class="text-sm text-slate-400">${x.title}</div>
-          <div class="text-2xl font-semibold mt-1">${x.value}</div>
-        </div>
-      `).join('');
-    }
-
-    // Favorites
-    function getFavorites(){ try{ return JSON.parse(localStorage.getItem('fx_favorites')||'[]') } catch { return [] } }
-    function setFavorites(arr){ localStorage.setItem('fx_favorites', JSON.stringify(arr)); }
-    function isFavorite(id){ return getFavorites().includes(id); }
-    function toggleFavorite(id){
-      let favs=getFavorites();
-      favs = favs.includes(id) ? favs.filter(x=>x!==id) : [...favs,id];
-      setFavorites(favs); renderFavorites(); renderMovers(); renderTrending();
-    }
-    function renderFavorites(){
-      const favs = getFavorites();
-      const favCoins = state.markets.filter(x => favs.includes(x.id));
-      const favSection = document.getElementById('favoritesSection');
-      const favDiv = document.getElementById('favorites');
-      if (!favCoins.length) { favSection.style.display='none'; return; }
-      favSection.style.display=''; 
-      favDiv.innerHTML = favCoins.map(x=>`
-        <div class="flex items-center gap-3 border border-slate-700 rounded-lg p-3">
-          <span class="fav-star cursor-pointer text-2xl select-none ${isFavorite(x.id)?'text-yellow-400':'text-slate-500'}" data-id="${x.id}" title="Toggle favorite">&#9733;</span>
-          <img src="${x.image}" alt="" class="w-7 h-7 rounded-full" />
+      <div class="p-6 space-y-4">
+        <div class="flex items-start justify-between">
           <div>
-            <div class="font-medium">${x.name} <span class="text-slate-400 text-xs">(${x.symbol.toUpperCase()})</span></div>
-            <div class="text-xs text-slate-400">Price: ${cur(state.vs).format(x.current_price)}</div>
+            <h4 class="text-base font-semibold text-white">Necessary</h4>
+            <p class="text-xs text-slate-400 max-w-[250px]">Required for the site to function.</p>
           </div>
-        </div>`).join('');
-      favDiv.querySelectorAll('.fav-star').forEach(el=> el.onclick=()=>toggleFavorite(el.dataset.id));
-    }
-    function favStar(id){ return `<span class="fav-star cursor-pointer text-xl select-none ${isFavorite(id)?'text-yellow-400':'text-slate-500'}" data-id="${id}" title="Toggle favorite">&#9733;</span>`; }
-
-    function renderMovers(){
-      const c = cur(state.vs);
-      const topUp = [...state.filtered].sort((a,b)=>(b.price_change_percentage_24h||-1)-(a.price_change_percentage_24h||-1)).slice(0,5);
-      const topDown = [...state.filtered].sort((a,b)=>(a.price_change_percentage_24h||1)-(b.price_change_percentage_24h||1)).slice(0,5);
-      els.moversNote.textContent = `Top ±24h | ${state.filtered.length} assets`;
-
-      const row = (x)=>`
-        <div class="flex items-center justify-between rounded-lg border border-slate-700 px-3 py-2">
-          <div class="flex items-center gap-3">
-            ${favStar(x.id)}
-            <img src="${x.image}" alt="" class="w-6 h-6 rounded-full" />
-            <div>
-              <div class="font-medium">${x.name} <span class="text-slate-400 text-xs">(${x.symbol.toUpperCase()})</span></div>
-              <div class="text-xs text-slate-400">${chip('#'+x.market_cap_rank)} ${chip('Vol/MC ' + ((x.total_volume||0)/(x.market_cap||1)).toFixed(2))}</div>
-            </div>
+          <div><input type="checkbox" checked disabled
+              class="w-5 h-5 rounded border-slate-600 bg-indigo-500 opacity-50"></div>
+        </div>
+        <div class="flex items-start justify-between">
+          <div>
+            <h4 class="text-base font-semibold text-white">Analytics</h4>
+            <p class="text-xs text-slate-400 max-w-[250px]">Help us improve by understanding how you use the site.</p>
           </div>
-          <div class="text-right">
-            <div class="font-semibold">${c.format(x.current_price)}</div>
-            <div>${badge(x.price_change_percentage_24h)}</div>
-          </div>
-        </div>`;
+          <div><input type="checkbox" id="chk-analytics" name="consent-type" value="analytics"
+              class="w-5 h-5 rounded border-slate-600 bg-slate-700 text-indigo-500"></div>
+        </div>
+      </div>
+      <div class="p-4 bg-black/20 flex justify-end gap-3">
+        <button id="btn-close-modal" class="btn-ghost px-4 py-2 rounded-lg text-sm">Cancel</button>
+        <button id="btn-save-preferences" class="btn-primary px-4 py-2 rounded-lg text-sm">Save Preferences</button>
+      </div>
+    </div>
+  </div>
 
-      els.movers.innerHTML = `
-        <div class="text-xs text-slate-400 mb-1">Gainers</div>
-        ${topUp.map(row).join('')}
-        <div class="text-xs text-slate-400 mt-3 mb-1">Losers</div>
-        ${topDown.map(row).join('')}
-      `;
-      els.movers.querySelectorAll('.fav-star').forEach(el=> el.onclick=()=>toggleFavorite(el.dataset.id));
-    }
-
-    function renderTrending(){
-      els.trendingNote.textContent = `${state.trending.length} coins`;
-      els.trending.innerHTML = state.trending.map((it, idx)=>`
-        <div class="flex items-center gap-2 mb-2">
-          ${favStar(it.id)}
-          <a target="_blank" href="https://www.coingecko.com/en/coins/${it.id}" class="block flex-1 rounded-xl border border-slate-700 p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
-            <div class="flex items-center gap-3">
-              <img src="${it.small}" alt="" class="w-7 h-7 rounded-full" />
-              <div class="font-medium">${it.name} <span class="text-slate-400 text-xs">(${it.symbol.toUpperCase()})</span></div>
-            </div>
-            <div class="mt-2 text-xs text-slate-400">Rank: ${idx+1} • Market Cap Rank: ${it.market_cap_rank ?? '—'}</div>
-          </a>
-        </div>`).join('');
-      els.trending.querySelectorAll('.fav-star').forEach(el=> el.onclick=()=>toggleFavorite(el.dataset.id));
-    }
-
-    function ideaCard(title, coins, note, actionType){
-      if(coins.length===0){
-        let icon = actionType==='Long'?'&#8599;':actionType==='Short'?'&#8600;':'&#8212;';
-        let color = actionType==='Long'?'text-emerald-400':actionType==='Short'?'text-rose-400':'text-slate-400';
-        return `
-          <div class="border border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center bg-slate-800/60">
-            <div class="flex items-center gap-3 mb-2">
-              <span class="text-3xl font-bold ${color}">${icon}</span>
-              <span class="text-2xl font-bold ${color}">${actionType}</span>
-            </div>
-            <div class="text-sm text-slate-400 mb-2">${title}</div>
-            <div class="text-xs text-slate-500">No signals at the moment.</div>
-          </div>`;
-      }
-      return `
-        <div class="border border-slate-700 rounded-xl p-3">
-          <div class="flex items-center justify-between">
-            <h3 class="font-semibold">${title}</h3>
-            <div class="text-xs text-slate-400">${note}</div>
-          </div>
-          <div class="mt-2 space-y-4">
-            ${coins.slice(0,8).map(x=>{
-              const c = cur(state.vs);
-              const change1h = x.price_change_percentage_1h_in_currency ?? x.price_change_percentage_1h ?? 0;
-              const change24h = x.price_change_percentage_24h ?? 0;
-              const change7d = x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0;
-              let action="Wait";
-              if (change1h>0 && change24h>=5 && change7d>=10) action="Long";
-              else if (change24h<=-7 && change7d<0) action="Short";
-              let takeProfit, stopLoss, pctToTP, pctToSL, rrRatio;
-              if(action==="Short"){
-                takeProfit=x.current_price*0.90; stopLoss=x.current_price*1.05;
-                pctToTP=((x.current_price-takeProfit)/x.current_price*100).toFixed(1);
-                pctToSL=((stopLoss-x.current_price)/x.current_price*100).toFixed(1);
-                rrRatio=((x.current_price-takeProfit)/(stopLoss-x.current_price)).toFixed(2);
-              } else if(action==="Long"){
-                takeProfit=x.current_price*1.10; stopLoss=x.current_price*0.95;
-                pctToTP=((takeProfit-x.current_price)/x.current_price*100).toFixed(1);
-                pctToSL=((x.current_price-stopLoss)/x.current_price*100).toFixed(1);
-                rrRatio=((takeProfit-x.current_price)/(x.current_price-stopLoss)).toFixed(2);
-              } else {
-                takeProfit=stopLoss=x.current_price; pctToTP=pctToSL=rrRatio='—';
-              }
-              return `
-              <div class="flex flex-col gap-2 border-b border-slate-800 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
-                <div class="flex items-center gap-2 mb-1">
-                  <img src="${x.image}" class="w-5 h-5 rounded-full" />
-                  <div class="text-base font-semibold">${x.name} <span class="text-xs text-slate-400">(${x.symbol.toUpperCase()})</span></div>
-                </div>
-                <div class="flex flex-wrap gap-4 text-sm text-slate-400 mb-1">
-                  <div>Current: <span class="font-bold text-slate-100">${c.format(x.current_price)}</span></div>
-                  <div>TP: <span class="font-bold text-emerald-400">${c.format(takeProfit)}</span> <span class="text-xs">(${action==="Short"?"-":"+"}${pctToTP}%)</span></div>
-                  <div>SL: <span class="font-bold text-rose-400">${c.format(stopLoss)}</span> <span class="text-xs">(${action==="Short"?"+":"-"}${pctToSL}%)</span></div>
-                  <div>R/R: <span class="font-bold text-indigo-400">${rrRatio}</span></div>
-                </div>
-                <div class="flex items-center gap-2 mt-1">
-                  <span class="text-xs text-slate-400">You should:</span>
-                  <span class="font-bold text-lg ${action==="Long"?"text-emerald-400":action==="Short"?"text-rose-400":"text-slate-300"}">${action}</span>
-                </div>
-                <div class="flex flex-wrap gap-4 text-xs text-slate-400 mt-1">
-                  <div>1h: <span class="font-bold">${change1h.toFixed(2)}%</span></div>
-                  <div>24h: <span class="font-bold">${change24h.toFixed(2)}%</span></div>
-                  <div>7d: <span class="font-bold">${change7d.toFixed(2)}%</span></div>
-                </div>
-              </div>`;}).join('')}
-          </div>
-        </div>`;
-    }
-
-    function renderIdeas(){
-      const m = state.filtered;
-      const binanceSet = state.binanceTradable || new Set();
-      const onBinance = x => binanceSet.has((x.symbol||'').toLowerCase());
-      const pos = v => v!==null && v!==undefined && v>0;
-      const neg = v => v!==null && v!==undefined && v<0;
-
-      const momentum = m.filter(x => onBinance(x) && pos(x.price_change_percentage_1h_in_currency) && (x.price_change_percentage_24h ?? 0) >= 5 && (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) >= 10).slice(0,12);
-      const dip = m.filter(x => onBinance(x) && (x.price_change_percentage_24h ?? 0) <= -7 && (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) < 0).slice(0,12);
-      const reversal = m.filter(x => onBinance(x) && neg(x.price_change_percentage_24h) && (x.price_change_percentage_1h_in_currency ?? 0) >= 1 && (x.price_change_percentage_7d_in_currency ?? x.price_change_percentage_7d ?? 0) > -3).slice(0,12);
-
-      els.ideas.innerHTML = `
-        ${ideaCard('Momentum long candidates', momentum, 'Binance only • 1h, 24h, 7d strength', 'Long')}
-        ${ideaCard('Dip short candidates', dip, 'Binance only • Deep 24h drop + weak 7d', 'Short')}
-        ${ideaCard('Reversal watchlist', reversal, 'Binance only • 1h bounce vs 24h red', 'Wait')}
-      `;
-    }
-
-    // Search
-    els.search.addEventListener('input', (e)=>{
-      const q=e.target.value.trim().toLowerCase();
-      state.filtered = q ? state.markets.filter(x => x.id.includes(q) || x.symbol.toLowerCase().includes(q) || x.name.toLowerCase().includes(q)) : state.markets;
-      renderMovers(); renderIdeas(); renderFavorites();
-    });
-    els.fiat.addEventListener('change', async (e)=>{ state.vs=e.target.value; try{ await loadAll(); }catch(err){ alert('Failed to reload: '+err.message);} renderFavorites(); });
-    els.refresh.addEventListener('click', async ()=>{
-      const btn = els.refresh;
-      btn.disabled = true;
-      btn.classList.add('is-loading');
-      try{
-        await loadAll();
-        renderFavorites();
-      }catch(err){
-        alert('Refresh failed: ' + err.message);
-      }finally{
-        btn.classList.remove('is-loading');
-        btn.disabled = false;
-      }
-    });
-
-    // News via RSS->JSON
-    const defaultNewsFeeds = [
-      'https://rss2json.com/api.json?rss_url=https://www.coindesk.com/arc/outboundfeeds/rss/?outputType=xml',
-      'https://rss2json.com/api.json?rss_url=https://cointelegraph.com/rss',
-      'https://rss2json.com/api.json?rss_url=https://www.theblock.co/rss.xml'
-    ];
-    async function loadNews(customUrl){
-      els.news.dataset.loaded='1';
-      els.news.innerHTML=''; setLoading(els.news,5);
-      const urls = customUrl ? [customUrl] : defaultNewsFeeds;
-      let items = [];
-      for(const u of urls){
-        try{
-          const j = await fetchJSON(u);
-          const arr = j.items || j;
-          for(const it of arr){
-            items.push({ title: it.title, link: it.link || it.guid, published: it.pubDate || it.published || it.date || null, source: (it.author || j.feed?.title || 'Source').toString() });
-          }
-        }catch(_){}
-      }
-      const seen=new Set(); items = items.filter(x=>{ if(seen.has(x.title)) return false; seen.add(x.title); return true; });
-      items.sort((a,b)=> new Date(b.published||0)-new Date(a.published||0));
-      els.news.innerHTML = items.slice(0,12).map(n=>`
-        <a target="_blank" href="${n.link}" class="block border border-slate-700 rounded-lg p-3 hover:border-indigo-600 hover:bg-slate-800/60 transition">
-          <div class="text-sm font-medium">${n.title}</div>
-          <div class="text-xs text-slate-400 mt-1">${n.source}${n.published ? ' • ' + new Date(n.published).toLocaleString() : ''}</div>
-        </a>`).join('') || `<div class="text-sm text-slate-400">No news available.</div>`;
-    }
-
-    let overlayStart = Date.now();
-    async function hideLoadingOverlay(){
-      const overlay = document.getElementById('loadingOverlay');
-      const elapsed = Date.now()-overlayStart;
-      const minDuration = 2400;
-      const wait=Math.max(0,minDuration-elapsed);
-      setTimeout(()=>{ if(overlay){ overlay.classList.add('hide'); setTimeout(()=>{ overlay.style.display='none' }, 900); } }, wait);
-    }
-
-    (async ()=>{
-      overlayStart = Date.now();
-      try{ await loadAll(); hideLoadingOverlay(); }
-      catch(err){ console.error(err); alert('Failed to load market data. Try again.'); hideLoadingOverlay(); }
-      document.getElementById('fx-year').textContent = new Date().getFullYear();
-    })();
+  <!-- Init -->
+  <script>
+    lucide.createIcons();
   </script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/analytics.js"></script>
 </body>
+
 </html>
