@@ -143,6 +143,9 @@ const Analytics = (() => {
               <div class="text-base sm:text-2xl font-bold mt-1 text-white truncate" title="${x.value}">${x.value}</div>
             </div>
         `).join('');
+
+        // Show the snapshot section once data is loaded
+        els.snapshot.classList.remove('hidden');
     };
 
     const renderMovers = () => {
